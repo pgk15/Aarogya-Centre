@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarogya Centre | Trang tổng quan</title>
+    <title>ChatBot tư vấn y tế | Trang tổng quan</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
 
     <!-- Bootstrap CSS -->
@@ -28,7 +28,7 @@
         <!-- Navigation Bar: Brand Logo -->
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.dashboard') }}">
-                <img src="/static/images/logo.png" alt="Aarogya Centre Logo" width="200" height="100">
+                <img src="/static/images/logo.png" alt="ChatBot tư vấn y tế Logo" width="200" height="100">
             </a>
 
             <!-- Navigation Bar: User -->
@@ -58,7 +58,7 @@
     <div class="card shadow p-2" id="greeting-card">
         <div class="card-body">
             {% if profile_data['basic_data']['speciality'] %}
-                <h1><b>{{ session_stats['greetings'] }} Dr. {{ profile_data['basic_data']['first_name'] }}</b></h1>
+                <h1><b>{{ session_stats['greetings'] }} BS. {{ profile_data['basic_data']['first_name'] }}</b></h1>
             {% else %}
                 <h1><b>{{ session_stats['greetings'] }} {{ profile_data['basic_data']['first_name'] }}</b></h1>
             {% endif %}

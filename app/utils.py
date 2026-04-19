@@ -10,13 +10,13 @@ def greetings():
     hour = local_time.hour
 
     if 5 <= hour < 12:
-        return "Good Morning!"
+        return "Chào buổi sáng!"
     elif 12 <= hour < 16:
-        return "Good Afternoon!"
+        return "Chào buổi chiều!"
     elif 16 <= hour < 22:
-        return "Good Evening!"
+        return "Chào buổi tối!"
     else:
-        return "Good Night!"
+        return "Chào buổi tối!"
     
 
 def profile_completion(data):

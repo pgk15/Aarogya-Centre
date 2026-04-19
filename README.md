@@ -1,5 +1,5 @@
 # Tong Quan
-Aarogya Centre la nen tang cham soc suc khoe toan dien, giup nguoi dung quan ly thong tin suc khoe ca nhan va gia dinh, dat lich kham, tu van voi chatbot, va tuong tac voi bac si qua hinh thuc trực tuyến.
+ChatBot tư vấn y tế la nen tang cham soc suc khoe toan dien, giup nguoi dung quan ly thong tin suc khoe ca nhan va gia dinh, dat lich kham, tu van voi chatbot, va tuong tac voi bac si qua hinh thuc trực tuyến.
 
 ## Cong Nghe Su Dung
 - Frontend: HTML, CSS, JavaScript, Bootstrap, Jinja
@@ -40,7 +40,7 @@ Aarogya Centre la nen tang cham soc suc khoe toan dien, giup nguoi dung quan ly 
 ## Cac Buoc
 1. Clone repo:
 ```sh
-git clone https://github.com/PrathameshLakawade/Aarogya-Centre.git
+git clone <repo-url>
 ```
 
 2. Tao virtual environment va cai dependency:
@@ -70,7 +70,7 @@ MAIL_USE_TLS='true'
 MAIL_USE_SSL='false'
 ```
 
-4. Tao bang tren PostgreSQL + xuat schema:
+4. Seed schema (tao bang) tren PostgreSQL + xuat schema:
 ```sh
 python3 scripts/setup_postgres.py
 ```
@@ -80,9 +80,39 @@ Script se:
   - `docs/database_schema.md`
   - `docs/database_schema.sql`
 
-5. Chay server:
+5. Seed du lieu mau:
+```sh
+python3 scripts/seed_database.py
+```
+
+6. (Tuy chon) Xuat seed data thanh file SQL de import sang DB khac:
+```sh
+python3 scripts/export_seed_sql.py
+```
+File tao ra: `docs/seed_data.sql`
+
+7. Chay server:
 ```sh
 python3 main.py
+```
+
+## 1 Lenh Bootstrap DB (khuyen dung)
+Neu ban muon 1 lenh duy nhat de:
+- Tao schema (neu can)
+- Tao toan bo bang
+- Seed du lieu mau
+thi chay:
+```sh
+python3 scripts/bootstrap_db.py --schema public --export-sql
+```
+
+## Seed Het Bang (khong can tham so)
+Chay 1 lenh la:
+- Tao toan bo bang (day du cot)
+- Seed du lieu mau tat ca bang
+- Xuat schema + seed SQL vao `docs/`
+```sh
+python3 scripts/seed_tables.py
 ```
 
 # Cach Su Dung

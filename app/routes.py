@@ -395,6 +395,9 @@ def view_profile():
 @bp.route("/add-member", methods=['GET', 'POST'])
 def add_member():
     profile_data = session.get('profile_data')
+    if not profile_data:
+        return redirect(url_for("main.login"))
+
     if request.method == 'POST':
         member_data = {
             'first_name': request.form.get("first-name").capitalize(),
