@@ -4,7 +4,16 @@ import logging
 import traceback
 
 from app.database import db
-from app.models import appointment_data, basic_data, documents, health_data, user_stats, doctor_stats, members_data
+from app.models import (
+    appointment_data,
+    basic_data,
+    documents,
+    health_data,
+    user_stats,
+    doctor_stats,
+    members_data,
+    medication_reminder,
+)
 
 logger = logging.getLogger(__name__)
 

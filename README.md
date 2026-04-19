@@ -51,19 +51,21 @@ pip install -r requirements.txt
 3. Set up environment variables (`.env` file):
 ```sh
 # Database Configurations
-HOST='your-database-host'
-PORT='your-database-port'
-DATABASE='your-databse-name'
-USERNAME='your-datbase-username'
-DATABASE_PASSWORD='your-database-password'
+DB_HOST='your-database-host'
+DB_PORT='5432'
+DB_NAME='your-database-name'
+DB_USER='your-database-username'
+DB_PASSWORD='your-database-password'
+# Optional: use a full URL
+# DATABASE_URL='postgresql://user:password@host:5432/database'
 
 # Email Configurations
-SERVER='your-email-server'
-PORT='your-email-port'
-EMAIL='your-email-address'
-EMAIL_PASSWORD='your-password'
-USE_TLS='true/false'
-USE_SSL='true/false'
+MAIL_SERVER='your-email-server'
+MAIL_PORT='587'
+MAIL_USERNAME='your-email-address'
+MAIL_PASSWORD='your-password'
+MAIL_USE_TLS='true'
+MAIL_USE_SSL='false'
 ```
 4. Start the Flask server:
 ```sh

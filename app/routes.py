@@ -1,16 +1,112 @@
 from flask import Blueprint, render_template, redirect, url_for, send_file, request, session, current_app
 from datetime import datetime
 from io import BytesIO
+from urllib.parse import parse_qs, unquote, urlparse
+import csv
+import re
 
 import app.utils as utils
 import app.services.schema_service as schema
 import app.services.profile_service as profile
 import app.services.appointment_service as appointment
+import app.services.reminder_service as reminder_service
+from app.models.documents import Documents
 
-import pickle, os
-import pandas as pd
+import os
 
 bp = Blueprint('main', __name__)
+
+
+SPECIALITY_KEYWORDS = {
+    "Cardiologist": ["chest pain", "heart", "palpitation", "high bp", "blood pressure", "breathlessness"],
+    "Dermatologist": ["skin", "rash", "itch", "acne", "eczema", "allergy skin"],
+    "Neurologist": ["headache", "migraine", "dizziness", "numbness", "seizure"],
+    "Gastroenterologist": ["stomach", "gastric", "vomit", "nausea", "diarrhea", "constipation", "abdominal"],
+    "Endocrinologist": ["thyroid", "sugar", "diabetes", "hormone"],
+    "Pediatrician": ["child", "kid", "baby", "infant", "toddler"],
+    "Urologist": ["urine", "kidney", "bladder", "burning urination"],
+    "Dentist": ["tooth", "teeth", "gum", "dental", "jaw"],
+    "Family Physician": ["fever", "cold", "cough", "fatigue", "weakness"]
+}
+
+EMERGENCY_KEYWORDS = [
+    "severe chest pain",
+    "fainting",
+    "unconscious",
+    "stroke",
+    "cannot breathe",
+    "blood vomiting",
+]
+
+
+def _build_member_name_map(profile_data, members_data):
+    members_data = members_data or []
+    name_map = {
+        int(profile_data["basic_data"]["id"]): f"{profile_data['basic_data']['first_name']} {profile_data['basic_data']['last_name']}"
+    }
+    for member in members_data:
+        name_map[int(member["id"])] = f"{member['first_name']} {member['last_name']}"
+    return name_map
+
+
+def _load_doctor_suggestions_by_speciality(selected_speciality, limit=3):
+    dataset_path = os.path.join(current_app.root_path, "static", "datasets", "doctors_dataset.csv")
+    doctors = []
+    try:
+        with open(dataset_path, newline="", encoding="utf-8") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if len(row) < 2:
+                    continue
+                doctor_name, doctor_url = row[0].strip(), row[1].strip()
+                parsed_url = urlparse(doctor_url)
+                params = parse_qs(parsed_url.query)
+                specialisation = unquote(params.get("specialization", [""])[0]).strip()
+                if specialisation.lower() == selected_speciality.lower():
+                    doctors.append({"name": doctor_name, "url": doctor_url})
+                if len(doctors) >= limit:
+                    break
+    except Exception as e:
+        print(f"Error loading doctor suggestions: {e}")
+    return doctors
+
+
+def _get_suggested_speciality(response):
+    normalized = re.sub(r"\s+", " ", response.lower()).strip()
+    if any(keyword in normalized for keyword in EMERGENCY_KEYWORDS):
+        return "emergency"
+
+    scores = {}
+    for speciality, keywords in SPECIALITY_KEYWORDS.items():
+        score = sum(1 for keyword in keywords if keyword in normalized)
+        if score:
+            scores[speciality] = score
+
+    if not scores:
+        return "Family Physician"
+    return max(scores, key=scores.get)
+
+
+def _refresh_session(profile_id):
+    profile_data = profile.get_profile(profile_id)
+    session["profile_data"] = profile_data
+    session["appointment_data"] = appointment.get_all_appointments(profile_id) or []
+    session["members_data"] = profile.get_members(profile_id) or []
+    session["upcoming_appointments"] = appointment.get_upcoming_appointments(profile_id, datetime.today())
+    session["medication_reminders"] = reminder_service.get_medication_reminders(profile_id)
+    session["today_medication_notifications"] = reminder_service.get_today_medication_notifications(profile_id)
+
+    greetings = utils.greetings()
+    current_date = datetime.today().strftime("%Y-%m-%d")
+    account_created_on = profile_data["stats"]["account_created_on"]
+    account_age = datetime.strptime(current_date, "%Y-%m-%d") - datetime.strptime(str(account_created_on), "%Y-%m-%d")
+    account_age = str(account_age).split(",")
+    completion_percentage = utils.profile_completion(profile_data)
+    session["session_stats"] = {
+        "greetings": greetings,
+        "account_age": account_age[0],
+        "completion_percentage": completion_percentage
+    }
 
 
 # Home
@@ -79,40 +175,18 @@ def login():
 
         id = profile.authentication(login_data)
         if id:
-            profile_data = profile.get_profile(id)
-            if profile_data != None:
-                profile_data['basic_data']['logged_in'] = True
-                session['profile_data'] = profile_data
-                
-            appointment_data = appointment.get_all_appointments(id)
-            if appointment_data != None:
-                session['appointment_data'] = appointment_data
-                
-            members_data = profile.get_members(id)
-            if members_data != None:
-                session['members_data'] = members_data
-                
-            greetings = utils.greetings()
-            current_date = datetime.today().strftime("%Y-%m-%d")
-            account_created_on = profile_data['stats']['account_created_on']
-            account_age = datetime.strptime(current_date, "%Y-%m-%d") - datetime.strptime(str(account_created_on), "%Y-%m-%d")
-            account_age = str(account_age).split(',')
-            completion_percentage = utils.profile_completion(profile_data)
-            session['session_stats'] = {
-                'greetings': greetings,
-                'account_age': account_age[0],
-                'completion_percentage': completion_percentage
-            }
-            
-            session['upcoming_appointments'] = appointment.get_upcoming_appointments(id, datetime.today())
-            
+            _refresh_session(id)
+            profile_data = session.get("profile_data")
+            if profile_data is not None:
+                profile_data["basic_data"]["logged_in"] = True
+
             session['chat_history'] = {
                 "user_id": id,
                 "messages": [
                     {
                         "sender": "Bot",
-                        "message": "Welcome to healthcare chatbot. How can I help you today?",
-                        "timetamp": datetime.now()
+                        "message": "Welcome to healthcare chatbot. Describe your symptoms and I will suggest a suitable speciality.",
+                        "timestamp": datetime.now()
                     }
                 ]
             }
@@ -136,7 +210,12 @@ def dashboard():
                            chat_history=session.get('chat_history'),
                            ongoing_booking=session.get('ongoing_booking'),
                            list_of_doctors=session.get('list_of_doctors'),
-                           available_slots=session.get('available_slots')
+                           available_slots=session.get('available_slots'),
+                           today_medication_notifications=session.get('today_medication_notifications'),
+                           member_name_map=_build_member_name_map(
+                               session.get('profile_data'),
+                               session.get('members_data')
+                           ) if session.get('profile_data') else {}
                            )
 
 
@@ -146,7 +225,7 @@ def search_doctors():
     if request.method == 'POST':
         mode = request.form.get("appointment-mode")
         member_id = request.form.get("appointment-member")
-        city = request.form.get("appointment-city").capitalize()
+        city = (request.form.get("appointment-city") or "").capitalize()
         doctor_category = request.form.get("appointment-doctor-category")
         
         member_data = profile.get_profile(member_id)
@@ -264,10 +343,16 @@ def communicate():
 # Profile
 @bp.route("/profile")
 def view_profile():
-    members_data = session.get('members_data')
+    profile_data = session.get("profile_data")
+    if not profile_data:
+        return redirect(url_for("main.login"))
+
+    profile_id = profile_data["basic_data"]["id"]
+    _refresh_session(profile_id)
+    profile_data = session.get("profile_data")
+    members_data = session.get("members_data") or []
     
     members_appointment_data = []
-    print(members_data)
     for member in members_data:
         members_appointment_data.append(
             {
@@ -276,15 +361,20 @@ def view_profile():
                 'appointments': appointment.get_all_appointments(member['id'])
             }
         )
-    
-    print(members_appointment_data)
+
+    member_documents_map = {}
+    for member in members_data:
+        member_documents_map[member["id"]] = profile.get_documents_by_user(member["id"])
     
     return render_template("profile.html", 
-                           profile_data=session.get('profile_data'),
+                           profile_data=profile_data,
                            members_data=members_data,
                            members_appointment_data=members_appointment_data,
                            appointment_data=session.get('appointment_data'), 
-                           session_stats=session.get('session_stats')
+                           session_stats=session.get('session_stats'),
+                           medication_reminders=session.get('medication_reminders'),
+                           member_documents_map=member_documents_map,
+                           member_name_map=_build_member_name_map(profile_data, members_data)
                            )
 
 
@@ -308,9 +398,10 @@ def add_member():
 
         if profile.create_profile(member_data):
             if profile.create_relation(profile_data["basic_data"]["id"], member_data["email"], member_data["relation"]):
-                if profile_data['stats']['number_of_documents_uploaded'] >= 0:
-                    profile_data['stats']['number_of_documents_uploaded'] += 1
-                    profile.edit_profile(profile_data)
+                if profile_data["stats"]["number_of_members_added"] >= 0:
+                    profile_data["stats"]["number_of_members_added"] += 1
+                    profile.edit_profile(profile_data["basic_data"]["id"], profile_data)
+                _refresh_session(profile_data["basic_data"]["id"])
                 return redirect(url_for('main.view_profile'))
             else:
                 return redirect(url_for('main.add_member'))
@@ -323,19 +414,34 @@ def add_member():
 # Profile: Upload Documents
 @bp.route("/upload-documents", methods=['GET', 'POST'])
 def upload_documents():
-    if request.method == 'POST':
-        file_name = request.form.get("document-name").capitalize()
-        file = request.files['document']
-        profile_data = session.get('profile_data')
-        if not file:
-            return render_template('profile.html', profile_data=profile_data)
+    profile_data = session.get('profile_data')
+    if not profile_data:
+        return redirect(url_for('main.login'))
 
-        if profile.insert_document(file, file_name, profile_data['basic_data']['id']):
+    if request.method == 'POST':
+        file_name = (request.form.get("document-name") or "").strip().capitalize()
+        file = request.files['document']
+        target_member_id = request.form.get("document-owner") or str(profile_data["basic_data"]["id"])
+
+        if not file or not file_name:
             return redirect(url_for('main.view_profile'))
-        else:
-            render_template('profile.html', profile_data=profile_data)
-    else:
-        return render_template('profile.html', profile_data=profile_data)
+
+        try:
+            target_member_id = int(target_member_id)
+        except ValueError:
+            return redirect(url_for('main.view_profile'))
+
+        admin_id = profile_data["basic_data"]["id"]
+        if not profile.is_self_or_member(admin_id, target_member_id):
+            return redirect(url_for('main.view_profile'))
+
+        if profile.insert_document(file, file_name, target_member_id):
+            profile_data["stats"]["number_of_documents_uploaded"] += 1
+            profile.edit_profile(admin_id, profile_data)
+            _refresh_session(admin_id)
+            return redirect(url_for('main.view_profile'))
+        return redirect(url_for('main.view_profile'))
+    return redirect(url_for('main.view_profile'))
 
 
 # Profile: View Documents
@@ -350,20 +456,23 @@ def view_documents():
 @bp.route("/get-document/<document_id>", methods=['GET'])
 def get_document(document_id):
     profile_data = session.get('profile_data')
-    
-    # Locate the document in the user's session data
-    for doc in profile_data['documents']:
-        if doc['id'] == document_id:
-            doc_content = profile.get_document(document_id)  # Fetch binary content
-            return send_file(
-                BytesIO(doc_content),
-                mimetype='application/pdf',
-                as_attachment=False,  # Opens inline
-                download_name=doc['document_name']
-            )
-    
-    # If document not found, redirect back to profile
-    return redirect(url_for('main.view_profile'))
+    if not profile_data:
+        return redirect(url_for('main.login'))
+
+    document = Documents.query.filter_by(id=document_id).first()
+    if not document:
+        return redirect(url_for('main.view_profile'))
+
+    admin_id = profile_data["basic_data"]["id"]
+    if not profile.is_self_or_member(admin_id, document.user_id):
+        return redirect(url_for('main.view_profile'))
+
+    return send_file(
+        BytesIO(document.document),
+        mimetype='application/pdf',
+        as_attachment=False,
+        download_name=document.document_name
+    )
 
 
 # Update Profile
@@ -439,12 +548,74 @@ def update_login_data():
         return redirect(url_for('main.update_profile'))
 
 
+# Medication Reminders: Add
+@bp.route("/add-medication-reminder", methods=["POST"])
+def add_medication_reminder():
+    profile_data = session.get("profile_data")
+    if not profile_data:
+        return redirect(url_for("main.login"))
+
+    admin_id = int(profile_data["basic_data"]["id"])
+    member_id = request.form.get("member-id") or str(admin_id)
+    medicine_name = (request.form.get("medicine-name") or "").strip()
+    notes = (request.form.get("medicine-notes") or "").strip()
+    morning_enabled = request.form.get("morning") == "on"
+    evening_enabled = request.form.get("evening") == "on"
+
+    try:
+        member_id = int(member_id)
+    except ValueError:
+        return redirect(url_for("main.view_profile"))
+
+    if not profile.is_self_or_member(admin_id, member_id):
+        return redirect(url_for("main.view_profile"))
+
+    if not medicine_name:
+        return redirect(url_for("main.view_profile"))
+    if not morning_enabled and not evening_enabled:
+        return redirect(url_for("main.view_profile"))
+
+    reminder_service.create_medication_reminder(
+        {
+            "admin_user_id": admin_id,
+            "member_id": member_id,
+            "medicine_name": medicine_name,
+            "notes": notes,
+            "morning_enabled": morning_enabled,
+            "evening_enabled": evening_enabled,
+        }
+    )
+    _refresh_session(admin_id)
+    return redirect(url_for("main.view_profile"))
+
+
+# Medication Reminders: Delete
+@bp.route("/delete-medication-reminder/<int:reminder_id>", methods=["POST"])
+def delete_medication_reminder(reminder_id):
+    profile_data = session.get("profile_data")
+    if not profile_data:
+        return redirect(url_for("main.login"))
+
+    admin_id = int(profile_data["basic_data"]["id"])
+    reminder_service.delete_medication_reminder(admin_id, reminder_id)
+    _refresh_session(admin_id)
+    return redirect(url_for("main.view_profile"))
+
+
 # Healthcare Chatbot
 @bp.route("/healthcare-chatbot", methods=['GET', 'POST'])
 def healthcare_chatbot():
     if request.method == 'POST':
-        response = request.form.get('user-response').lower()
+        response = (request.form.get('user-response') or "").strip()
+        if not response:
+            return redirect(url_for('main.dashboard'))
+
         chat_history = session.get('chat_history')
+        if not chat_history:
+            chat_history = {
+                "user_id": session.get("profile_data", {}).get("basic_data", {}).get("id"),
+                "messages": []
+            }
         
         message = {
             "sender": "User",
@@ -453,20 +624,49 @@ def healthcare_chatbot():
         }
         
         chat_history['messages'].append(message)
+        suggested_speciality = _get_suggested_speciality(response)
 
-        with open('disease_model.pkl', 'rb') as file:
-            model = pickle.load(file)
-            data = pd.read_csv('./Training.csv')
-            X = data.iloc[:, :-1]
-            symptoms = X.columns.tolist()
+        if suggested_speciality == "emergency":
+            bot_reply = (
+                "I detected severe symptoms. Please seek emergency care immediately "
+                "or call your local emergency number."
+            )
+            chat_history["messages"].append(
+                {
+                    "sender": "Bot",
+                    "message": bot_reply,
+                    "timestamp": datetime.now()
+                }
+            )
+            session["chat_history"] = chat_history
+            return redirect(url_for("main.dashboard"))
 
-            user_symptoms = {symptom: 0 for symptom in symptoms}
-            for symptom in symptoms:
-                chat_history['messages'].append(f"Do you have {symptom.replace('_', ' ')}? (yes/no): ")
-                if chat_history['messages'] == 'yes':
-                    user_symptoms[symptom] = 1
+        doctors = _load_doctor_suggestions_by_speciality(suggested_speciality)
+        if doctors:
+            doctor_names = ", ".join(doctor["name"] for doctor in doctors)
+            doctor_reply = f"Suggested doctors ({suggested_speciality}): {doctor_names}."
+        else:
+            doctor_reply = f"Suggested speciality: {suggested_speciality}. Please use Book Appointment to find available doctors."
 
-            user_data = pd.DataFrame([user_symptoms])
-            prediction = model.predict(user_data)[0]
-            chat_history['messages'].append(f"\nBased on your symptoms, you may have: {prediction}")
-            return redirect(url_for('main.dashboard'))
+        triage_reply = (
+            f"Preliminary triage suggests: {suggested_speciality}. "
+            "This is not a medical diagnosis."
+        )
+        chat_history["messages"].append(
+            {
+                "sender": "Bot",
+                "message": triage_reply,
+                "timestamp": datetime.now()
+            }
+        )
+        chat_history["messages"].append(
+            {
+                "sender": "Bot",
+                "message": doctor_reply,
+                "timestamp": datetime.now()
+            }
+        )
+
+        session["chat_history"] = chat_history
+        return redirect(url_for('main.dashboard'))
+    return redirect(url_for('main.dashboard'))

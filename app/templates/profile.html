@@ -297,21 +297,132 @@
                     <form action="{{ url_for('main.upload_documents') }}" method="POST" enctype="multipart/form-data">
                         <div class="form-outline">
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <input type="text" name="document-name" placeholder="Enter your document name" class="form-control" />
                                 </div>
 
-                                <div class="col-md-4">
-                                    <input type="file" name="document" class="btn btn-custom btn-sm" />
+                                <div class="col-md-3">
+                                    <select class="form-control" name="document-owner" required>
+                                        <option value="{{ profile_data['basic_data']['id'] }}">Self ({{ profile_data['basic_data']['first_name'] }})</option>
+                                        {% for member in members_data %}
+                                            <option value="{{ member['id'] }}">{{ member['first_name'] }} {{ member['last_name'] }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <button type="submit" class="btn btn-custom btn-group-sm mx-4">Upload</button>
+                                    <input type="file" name="document" class="btn btn-custom btn-sm" />
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-custom btn-group-sm">Upload</button>
                                 </div>
                             </div>
                         </div> 
                     </form>
                 </div>
+            </div>
+
+            <!-- Family Documents Card -->
+            <div class="card shadow p-4 mt-4" id="member-documents-card">
+                <h3><b>Family Medical Records</b></h3>
+                <br>
+                {% if members_data %}
+                    {% for member in members_data %}
+                        <h6><b>{{ member['first_name'] }} {{ member['last_name'] }}</b> ({{ member['relation'] }})</h6>
+                        {% if member_documents_map[member['id']] %}
+                            {% for data in member_documents_map[member['id']] %}
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6>{{ data['document_name'] }}</h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button
+                                            type="button"
+                                            class="btn btn-custom btn-sm"
+                                            data-url="{{ url_for('main.get_document', document_id=data['id']) }}"
+                                            onclick="openDocument(this)">
+                                            View document
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h6>No documents uploaded for this member yet.</h6>
+                        {% endif %}
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                    <h6>Add a member to manage family medical records.</h6>
+                {% endif %}
+            </div>
+
+            <!-- Medication Reminder Card -->
+            <div class="card shadow p-4 mt-4" id="medication-reminder-card">
+                <h3><b>Medication Reminder (Morning - Evening)</b></h3>
+                <br>
+                <form action="{{ url_for('main.add_medication_reminder') }}" method="POST">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Member</b></label>
+                            <select class="form-control" name="member-id" required>
+                                <option value="{{ profile_data['basic_data']['id'] }}">Self ({{ profile_data['basic_data']['first_name'] }})</option>
+                                {% for member in members_data %}
+                                    <option value="{{ member['id'] }}">{{ member['first_name'] }} {{ member['last_name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Medicine</b></label>
+                            <input type="text" name="medicine-name" placeholder="e.g. Vitamin D" class="form-control" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Notes</b></label>
+                            <input type="text" name="medicine-notes" placeholder="After meal" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="morning" checked>
+                                <label class="form-check-label">Morning (08:00 AM)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="evening" checked>
+                                <label class="form-check-label">Evening (08:00 PM)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-custom">Add Reminder</button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                {% if medication_reminders %}
+                    {% for item in medication_reminders %}
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h6><b>{{ item['medicine_name'] }}</b> for {{ member_name_map.get(item['member_id'], 'Member #' ~ item['member_id']) }}</h6>
+                                <h6>
+                                    {% if item['morning_enabled'] %}Morning{% endif %}
+                                    {% if item['morning_enabled'] and item['evening_enabled'] %} + {% endif %}
+                                    {% if item['evening_enabled'] %}Evening{% endif %}
+                                    {% if item['notes'] %} | {{ item['notes'] }}{% endif %}
+                                </h6>
+                            </div>
+                            <div class="col-md-4">
+                                <form action="{{ url_for('main.delete_medication_reminder', reminder_id=item['id']) }}" method="POST">
+                                    <button class="btn btn-custom btn-sm" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                    <h6>No medication reminders yet.</h6>
+                {% endif %}
             </div>
 
             <!-- Appointment History Card -->

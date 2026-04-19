@@ -339,3 +339,32 @@ def insert_document(file, file_name, user_id):
     except Exception as e:
         db.session.rollback()
         return False
+
+
+def is_self_or_member(admin_id, member_id):
+    """Return True if member_id belongs to admin or is admin."""
+    try:
+        if int(admin_id) == int(member_id):
+            return True
+        relation = MembersData.query.filter_by(user_id=admin_id, member_id=member_id).first()
+        return relation is not None
+    except Exception as e:
+        print(f"Error checking relation ownership: {e}")
+        return False
+
+
+def get_documents_by_user(user_id):
+    """Fetch all documents for one user/member."""
+    try:
+        docs = Documents.query.filter_by(user_id=user_id).order_by(Documents.upload_date.desc()).all()
+        return [
+            {
+                "id": doc.id,
+                "document_name": doc.document_name,
+                "upload_date": doc.upload_date
+            }
+            for doc in docs
+        ]
+    except Exception as e:
+        print(f"Error fetching documents by user: {e}")
+        return []

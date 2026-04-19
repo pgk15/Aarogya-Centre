@@ -421,6 +421,29 @@
                 <a class="btn btn-custom mt-3" href="{{ url_for('main.add_member') }}" role="button">Add a member</a>
             </div>
 
+            <!-- Medication Notification Card -->
+            <div class="card shadow p-4 mt-4" id="medication-notification-card">
+                <h3><b>Today's Medication Alerts</b></h3>
+                <br>
+                {% if today_medication_notifications %}
+                    {% for item in today_medication_notifications %}
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h6><b>{{ item['medicine_name'] }}</b></h6>
+                                <h6>{{ member_name_map.get(item['member_id'], 'Member #' ~ item['member_id']) }}</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><b>{{ item['time_label'] }}</b></h6>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                    <h6>No medication reminders for today.</h6>
+                {% endif %}
+                <a class="btn btn-custom mt-2" href="{{ url_for('main.view_profile') }}" role="button">Manage reminders</a>
+            </div>
+
             <!-- Account Card -->
             <div class="card shadow p-4 my-4" id="account-age-card">
                 <h3><b>Profile Statistics</b></h3>
