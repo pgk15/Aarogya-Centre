@@ -44,8 +44,9 @@ class Config:
 
     if _database_url:
         SQLALCHEMY_DATABASE_URI = _database_url
-    elif all([_db_host, _db_name, _db_user, _db_password]):
-        SQLALCHEMY_DATABASE_URI = f"postgresql://{_db_user}:{_db_password}@{_db_host}:{_db_port}/{_db_name}"
+    elif all([_db_host, _db_name, _db_user]):
+        db_auth = _db_user if _db_password is None else f"{_db_user}:{_db_password}"
+        SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{db_auth}@{_db_host}:{_db_port}/{_db_name}"
     else:
         # Local/dev fallback when DB environment variables are not configured.
         SQLALCHEMY_DATABASE_URI = "sqlite:///aarogya_centre.db"

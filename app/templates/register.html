@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarogya Centre | Register</title>
+    <title>Aarogya Centre | Đăng ký</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
 
     <!-- Bootstrap CSS -->
@@ -29,30 +29,30 @@
         </div>
     </nav>
     
-    <!-- Register Card -->
+    <!-- Đăng ký Card -->
     <div class="card shadow p-5 mb-5 bg-body rounded">
         <div class="card-body">
-            <h1><b>Register</b></h1>
+            <h1><b>Đăng ký</b></h1>
 
             <form action="{{ url_for('main.register') }}" method="POST">
                 <div class="row">
                     <div class="col-md-4 mb-3 mt-2">
                         <div class="form-outline">
-                            <label class="form-label"><b>First name</b></label>
-                            <input type="text" name="first-name" placeholder="Enter your first name" class="form-control" required autofocus />
+                            <label class="form-label"><b>Tên</b></label>
+                            <input type="text" name="first-name" placeholder="Nhập tên của bạn" class="form-control" required autofocus />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3 mt-2">
                         <div class="form-outline">
-                            <label class="form-label"><b>Last name</b></label>
-                            <input type="text" name="last-name" placeholder="Enter your last name" class="form-control" required />
+                            <label class="form-label"><b>Họ</b></label>
+                            <input type="text" name="last-name" placeholder="Nhập họ của bạn" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3 mt-2">
                         <div class="form-outline">
-                            <label class="form-label"><b>Birth date</b></label>
+                            <label class="form-label"><b>Ngày sinh</b></label>
                             <input type="date" name="birth-date" class="form-control" required />
                         </div>
                     </div>
@@ -61,35 +61,35 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>Gender</b></label><br>
+                            <label class="form-label"><b>Gioi tinh</b></label><br>
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Male" checked required />
-                                <label>Male</label>
+                                <label>Nam</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Female" />
-                                <label>Female</label>
+                                <label>Nu</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Other" />
-                                <label>Other</label>
+                                <label>Khac</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>City</b></label>
-                            <input type="text" name="city" placeholder="Enter city name" class="form-control" required />
+                            <label class="form-label"><b>Thành phố</b></label>
+                            <input type="text" name="city" placeholder="Nhập tên thành phố" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>State</b></label>
-                            <input type="text" name="state" placeholder="Enter state name" class="form-control" required />
+                            <label class="form-label"><b>Tỉnh/Thành</b></label>
+                            <input type="text" name="state" placeholder="Nhập tỉnh/thành" class="form-control" required />
                         </div>
                     </div>
                 </div>
@@ -97,37 +97,37 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>Mobile number</b></label>
-                            <input type="number" name="mobile-number" placeholder="Enter your mobile number" class="form-control" required />
+                            <label class="form-label"><b>Số điện thoại</b></label>
+                            <input type="number" name="mobile-number" placeholder="Nhập số điện thoại của bạn" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-4">
-                        <label class="form-label"><b>User Category</b></label><br>
+                        <label class="form-label"><b>Loai tai khoan</b></label><br>
     
                         <div class="form-check form-check-inline">
                             <input type="radio" class="form-check-input" name="user-category" value="Normal" 
                                 onclick="hideFields()" checked />
-                            <label>Normal</label>
+                            <label>Nguoi dung</label>
                         </div>
                         
                         <div class="form-check form-check-inline">
                             <input type="radio" class="form-check-input" name="user-category" value="Doctor" 
                                 onclick="showFields()" />
-                            <label>Doctor</label>
+                            <label>Bac si</label>
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-1" id="speciality">
-                        <label class="form-label"><b>Select speciality</b></label><br>
+                        <label class="form-label"><b>Chọn chuyên khoa</b></label><br>
 
                         <select class="select form-control" name="doctor-speciality">
-                            <option value="" disabled selected>Choose Speciality</option>
+                            <option value="" disabled selected>Chọn chuyên khoa</option>
                             <option value="Allergist/Immunologist">Allergist/Immunologist</option>
                             <option value="Cardiologist">Cardiologist</option>
                             <option value="Dermatologist">Dermatologist</option>
                             <option value="Endocrinologist">Endocrinologist</option>
-                            <option value="Family Physician">Family Physician</option>
+                            <option value="Family Physician">Bác sĩ gia đình</option>
                             <option value="Gastroenterologist">Gastroenterologist</option>
                             <option value="Nephrologist">Nephrologist</option>
                             <option value="Neurologist">Neurologist</option>
@@ -145,22 +145,22 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>Email address</b></label>
-                            <input type="email" name="email-address" placeholder="Enter your email address" class="form-control" required />
+                            <label class="form-label"><b>Địa chỉ email</b></label>
+                            <input type="email" name="email-address" placeholder="Nhập địa chỉ email của bạn" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>Password</b></label>
-                            <input type="password" name="password" placeholder="Enter your password" class="form-control" required />
+                            <label class="form-label"><b>Mật khẩu</b></label>
+                            <input type="password" name="password" placeholder="Nhập mật khẩu của bạn" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>Re-enter password</b></label>
-                            <input type="password" name="re-enter-password" placeholder="Re-enter your password" class="form-control" required />
+                            <label class="form-label"><b>Nhập lại mật khẩu</b></label>
+                            <input type="password" name="re-enter-password" placeholder="Nhập lại mật khẩu" class="form-control" required />
                         </div>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
 
                     <div class="col-md-4 mt-3">
                         <div class="form-outline">
-                            <h6>Already have an account? <a href="{{ url_for('main.home') }}">Log in</a></h6>
+                            <h6>Đã có tài khoản? <a href="{{ url_for('main.home') }}">Đăng nhập</a></h6>
                         </div>
                     </div>
                 </div>

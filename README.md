@@ -1,65 +1,67 @@
-# **Overview**
-Aarogya Centre is a comprehensive healthcare platform that enables users to manage their medical needs efficiently. Users can create profiles, book appointments, chat with an AI-powered chatbot for minor health queries, and consult doctors via video or voice calls. The platform also allows users to scan and store their medical documents for easy access and manage appointments for family members.
+# Tong Quan
+Aarogya Centre la nen tang cham soc suc khoe toan dien, giup nguoi dung quan ly thong tin suc khoe ca nhan va gia dinh, dat lich kham, tu van voi chatbot, va tuong tac voi bac si qua hinh thuc trực tuyến.
 
-## **Tech Stack**
-- **Frontend**: HTML, CSS, JS, Bootstrap, Jinja
-- **Backend**: Flask
-- **Database**: PostgreSQL
-- **Chatbot**: NumPy, Pandas, Scikit-learn, Bag-of-Words Model
-- **Video/Voice Chat**: WebRTC
+## Cong Nghe Su Dung
+- Frontend: HTML, CSS, JavaScript, Bootstrap, Jinja
+- Backend: Flask
+- Co so du lieu: PostgreSQL (ho tro chay local bang SQLite fallback)
+- Chatbot: NLP + xu ly tu khoa
+- Goi trực tuyến: WebRTC
 
-## **Features**
-1. **User Profile Management**: Users can create and manage their profiles.
-2. **Appointment Booking**: Schedule appointments for themselves or family members.
-3. **AI-Powered Chatbot**: Get quick responses for minor health-related queries using an NLP-based chatbot.
-4. **Doctor Consultation**: Secure video and voice calls with doctors using WebRTC.
-5. **Medical Document Storage**: Scan and store medical records for easy access.
-6. **Family Member Management**: Add family members to the profile and book appointments for them.
+## Tinh Nang Chinh
+1. Quan ly ho so ca nhan va thong tin suc khoe.
+2. Them thanh vien gia dinh va dat lich cho tung thanh vien.
+3. Luu tru tai lieu y te (don thuoc, ket qua xet nghiem, benh an).
+4. Chatbot ho tro tu van co ban va goi y chuyen khoa.
+5. Dat lich kham truc tiep/online va theo doi lich hen sap toi.
+6. Nhac uong thuoc theo 2 moc co dinh: sang va chieu.
 
-## **Screenshots & Visuals**
-### **Login**
+## Hinh Anh Minh Hoa
+### Dang nhap
 ![Login](./docs/login.png)
 
-### **Dashboard**
+### Dashboard
 ![Dashboard-1](./docs/dashboard-1.png)
 ![Dashboard-2](./docs/dashboard-2.png)
 
-### **Chatbot Interaction**
+### Chatbot
 ![Chatbot](./docs/chatbot.png)
 
-### **Profile**
+### Ho so
 ![Profile-1](./docs/profile-1.png)
 ![Profile-2](./docs/profile-2.png)
 
-# **Installation & Setup**
-## **Prerequisites**
+# Cai Dat
+## Yeu Cau
 - Python 3.8+
-- PostgreSQL Database
+- PostgreSQL (neu chay production)
 - Node.js
 
-## Application Setup
-1. Clone the repository:
+## Cac Buoc
+1. Clone repo:
 ```sh
 git clone https://github.com/PrathameshLakawade/Aarogya-Centre.git
 ```
-2. Create a virtual environment and install dependencies:
+
+2. Tao virtual environment va cai dependency:
 ```sh
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\\Scripts\\activate
 pip install -r requirements.txt
 ```
-3. Set up environment variables (`.env` file):
-```sh
-# Database Configurations
-DB_HOST='your-database-host'
-DB_PORT='5432'
-DB_NAME='your-database-name'
-DB_USER='your-database-username'
-DB_PASSWORD='your-database-password'
-# Optional: use a full URL
-# DATABASE_URL='postgresql://user:password@host:5432/database'
 
-# Email Configurations
+3. Tao file `.env`:
+```sh
+# Database (PostgreSQL local)
+DATABASE_URL='postgresql+psycopg2://postgres@localhost:5432/chatbot'
+# Hoac dung DB_*:
+# DB_HOST='localhost'
+# DB_PORT='5432'
+# DB_NAME='chatbot'
+# DB_USER='postgres'
+# DB_PASSWORD=''
+
+# Mail
 MAIL_SERVER='your-email-server'
 MAIL_PORT='587'
 MAIL_USERNAME='your-email-address'
@@ -67,30 +69,35 @@ MAIL_PASSWORD='your-password'
 MAIL_USE_TLS='true'
 MAIL_USE_SSL='false'
 ```
-4. Start the Flask server:
+
+4. Tao bang tren PostgreSQL + xuat schema:
+```sh
+python3 scripts/setup_postgres.py
+```
+Script se:
+- Tao toan bo bang theo models.
+- Xuat "sheet schema" vao:
+  - `docs/database_schema.md`
+  - `docs/database_schema.sql`
+
+5. Chay server:
 ```sh
 python3 main.py
 ```
 
-# Usage
-1. Sign up and create a profile.
-2. Book an appointment for yourself or a family member.
-3. Use the chatbot for quick medical queries.
-4. Start a video or voice call consultation with a doctor.
-5. Scan and store medical documents for future reference.
+# Cach Su Dung
+1. Dang ky/Dang nhap tai khoan.
+2. Cap nhat ho so ca nhan.
+3. Them thanh vien gia dinh.
+4. Tai len tai lieu y te cho ban than hoac thanh vien.
+5. Dat lich kham theo hinh thuc Hospital/Home/Virtual.
+6. Su dung chatbot de nhan goi y chuyen khoa.
+7. Tao nhac uong thuoc sang/chieu va theo doi tren dashboard.
 
-# Future Enhancements
-- Integration with wearable devices for health tracking.
-- AI-powered symptom checker for enhanced chatbot functionality.
-- Support for electronic prescriptions and billing.
+# Huong Phat Trien Tiep
+- Tich hop thiet bi deo thong minh theo doi suc khoe.
+- Nang cap chatbot voi mo hinh AI manh hon.
+- Ho tro e-prescription va thanh toan.
 
-# Research & Publications
-This project is supported by an international research paper:
-- **Aarogya Centre - A Complete Healthcare Website**  
-  *Published in International Journal for Research in Applied Science & Engineering Technology (IJRASET), 2022*  
-  [View Paper](https://www.ijraset.com/best-journal/aarogya-centre-a-complete-healthcare-website)  
-  - Author: Prathamesh Lakawade
-  - Abstract: During the COVID-19 pandemic, everybody was forced to restrict their human interaction to avoid the spread of coronavirus. All the doctors and other employees in the medical industry were working day and night to eradicate the virus. Getting health-related consultation from doctors was risky as an individual had to physically go to a doctor for a checkup. Artificial Intelligence (AI) is the fastest-growing field and is expanding rapidly in other work sectors including the medical sector. Our proposed system is to develop a platform in which all queries related to health can be fulfilled. To start, every individual will need to create a profile on the platform by providing a few details. The user can insert their previous medical records onto the profile so that they can store their entire medical history in one place. On the platform, there will be three modules, chatbot, video chat, and appointment booking. The chatbot can predict the disease and give healthcare advice according to details provided by the user. In the video chat module, the user will be able to communicate with a doctor through video call or only through chat. In the appointment booking module, users can book an appointment with different doctors and hospitals for checkups. With the help of the platform, an individual can save a lot of time and money for simple health-related problems. The platform would also be beneficial for people living in remote areas as they can easily access good medical consultations.
-
-# License
-This project is licensed under the MIT License.
+# Giay Phep
+Du an su dung giay phep MIT.

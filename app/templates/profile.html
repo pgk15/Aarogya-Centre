@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarogya Centre | Profile</title>
+    <title>Aarogya Centre | Hồ sơ</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
 
     <!-- Bootstrap CSS -->
@@ -27,7 +27,7 @@
                 <img src="/static/images/logo.png" alt="Aarogya Centre Logo" width="200" height="100">
             </a>
 
-            <!-- Navigation Bar: User Name -->
+            <!-- Navigation Bar: User Malee -->
             <ul class="nav nav-pills">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
@@ -40,10 +40,10 @@
                         {% endif %}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">View dashboard</a></li>
-                        <li><a class="dropdown-item" href="#">Need help?</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">Xem trang tổng quan</a></li>
+                        <li><a class="dropdown-item" href="#">Cần trợ giúp?</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Log Out</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Đăng xuất</a></li>
                     </ul>
                 </li>   
             </ul>
@@ -53,9 +53,9 @@
     <div class="row">
         <div class="col-md-4">
 
-            <!-- Profile Completion Card -->
+            <!-- Mức độ hoàn thiện hồ sơ Card -->
             <div class="card shadow p-4" id="profile-completion-card">
-                <h3><b>Profile Completion</b></h3>
+                <h3><b>Mức độ hoàn thiện hồ sơ</b></h3>
 
                 {% if session_stats['completion_percentage'] %}
                     <div class="progress mt-2">
@@ -71,9 +71,9 @@
                 {% endif %}
             </div>
 
-            <!-- Family Member Card -->
+            <!-- Family Thành viên Card -->
             <div class="card shadow p-4 mt-4" id="family-member-card">
-                <h3><b>Family Members</b></h3>
+                <h3><b>Thành viên gia đình</b></h3>
                 
                 <br>
                 <div class="row">
@@ -86,7 +86,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <h6>Admin</h6>
+                        <h6>Chủ tài khoản</h6>
                     </div>
                     <hr>
                 </div>
@@ -108,16 +108,16 @@
                     </div>
                 {% endfor %}
 
-                <a class="btn btn-custom" href="{{ url_for('main.add_member') }}" role="button">Add a member</a>
+                <a class="btn btn-custom" href="{{ url_for('main.add_member') }}" role="button">Thêm thành viên</a>
             </div>
 
             <!-- Appointment Link Card -->
             <div class="card shadow p-4 mt-4" id="appointment-link-card">
                 <div class="row">
                     <div class="col">
-                        <h3><b>Book an appointment with a doctor</b></h3>
+                        <h3><b>Đặt lịch khám với bác sĩ</b></h3>
                         <hr>
-                        <a class="btn btn-custom" href="{{ url_for('main.dashboard') }}" role="button">Book</a>
+                        <a class="btn btn-custom" href="{{ url_for('main.dashboard') }}" role="button">Đặt lịch</a>
                     </div>
                     <div class="col">
                         <img src="/static/images/appointment-icon.png" alt="Communicate Vector" width="125" height="160">
@@ -129,9 +129,9 @@
             <div class="card shadow p-4 mt-4" id="communicate-link-card">
                 <div class="row">
                     <div class="col">
-                        <h3><b>Now you can instantly communicate with a doctor!</b></h3>
+                        <h3><b>Giờ đây bạn có thể trao đổi ngay với bác sĩ!</b></h3>
                         <hr>
-                        <a class="btn btn-custom" href="{{ url_for('main.communicate') }}" role="button">Contact</a>
+                        <a class="btn btn-custom" href="{{ url_for('main.communicate') }}" role="button">Liên hệ</a>
                     </div>
                     <div class="col">
                         <img src="/static/images/communicate-icon.png" alt="Communicate Vector" width="115" height="150">
@@ -143,9 +143,9 @@
 
         <div class="col-md-8">
 
-            <!-- Profile Card -->
+            <!-- Hồ sơ Card -->
             <div class="card shadow p-4" id="profile-card">
-                <h3><b>Profile</b></h3>
+                <h3><b>Hồ sơ</b></h3>
                 <br>
 
                 <div class="row d-flex align-items-end">
@@ -161,14 +161,14 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <h6>ID</h6>
-                                <h6>First Name</h6>
-                                <h6>Last Name</h6>
-                                <h6>Email Address</h6>
-                                <h6>Birth Date</h6>
-                                <h6>Address</h6>
-                                <h6>City</h6>
-                                <h6>State</h6>
-                                <h6>Mobile Number</h6>
+                                <h6>Tên</h6>
+                                <h6>Họ</h6>
+                                <h6>Địa chỉ email</h6>
+                                <h6>Ngày sinh</h6>
+                                <h6>Địa chỉ</h6>
+                                <h6>Thành phố</h6>
+                                <h6>Tỉnh/Thành</h6>
+                                <h6>Số điện thoại</h6>
                             </div>
 
                             <div class="col-md-8">
@@ -184,10 +184,10 @@
                             </div>
                         </div>
 
-                        {% if profile_data['basic_data']['speciality'] == 'None' %}
+                        {% if profile_data['basic_data']['speciality'] %}
                             <div class="row">
                                 <div class="col-md-4">
-                                    <h6>Speciality</h6>
+                                    <h6>Chuyên khoa</h6>
                                 </div>
                                 <div class="col-md-8">
                                     <h6>{{ profile_data['basic_data']['speciality'] }}</h6>
@@ -199,22 +199,22 @@
                     <div class="col">
                         <div class="row">
                             <div class="col-md-5">
-                                <h6>Gender</h6>
-                                <h6>Age</h6>
-                                <h6>Blood group</h6>
-                                <h6>Weight (kgs)</h6>
-                                <h6>Height (cms)</h6>
-                                <h6>Obesity</h6>
-                                <h6>Disability</h6>
-                                <h6>Fitzpatrick skin type</h6>
-                                <h6>Allergies</h6>
-                                <h6>Diabetes</h6>
-                                <h6>Thyroid</h6>
-                                <h6>Cancer</h6>
-                                <h6>Covid</h6>
-                                <h6>Asthma</h6>
+                                <h6>Giới tính</h6>
+                                <h6>Tuổi</h6>
+                                <h6>Nhóm máu</h6>
+                                <h6>Cân nặng (kg)</h6>
+                                <h6>Chiều cao (cm)</h6>
+                                <h6>Béo phì</h6>
+                                <h6>Khuyết tật</h6>
+                                <h6>Loại da Fitzpatrick</h6>
+                                <h6>Dị ứng</h6>
+                                <h6>Tiểu đường</h6>
+                                <h6>Tuyến giáp</h6>
+                                <h6>Ung thư</h6>
+                                <h6>COVID</h6>
+                                <h6>Hen suyễn</h6>
                                 <h6>HIV/AIDS</h6>
-                                <h6>Addiction</h6>
+                                <h6>Nghiện</h6>
                             </div>
 
                             <div class="col-md-7">
@@ -240,12 +240,12 @@
                 </div>
 
                 <br>
-                <a class="btn btn-custom" href="{{ url_for('main.update_profile') }}" role="button">Update Profile</a>
+                <a class="btn btn-custom" href="{{ url_for('main.update_profile') }}" role="button">Cập nhật hồ sơ</a>
             </div>
 
-            <!-- Documents Card -->
+            <!-- Tài liệu y tế Card -->
             <div class="card shadow p-4 mt-4" id="documents-card">
-                <h3><b>Documents</b></h3>
+                <h3><b>Tài liệu y tế</b></h3>
                 
                 <div class="row">
                     <div class="col">
@@ -263,14 +263,14 @@
                                             class="btn btn-custom btn-sm" 
                                             data-url="{{ url_for('main.get_document', document_id=data['id']) }}"
                                             onclick="openDocument(this)">
-                                            View document
+                                            Xem tài liệu
                                         </button>
                                     </div>
                                 </div>
                                 <hr>
                             {% endfor %}
                         {% else %}
-                            <h6>Your uploaded documents will appear here.</h6>
+                            <h6>Tài liệu bạn tải lên sẽ hiển thị tại đây.</h6>
                         {% endif %}
                     </div>
                 </div>
@@ -288,7 +288,7 @@
                 </script>                
                                 
                     <div class="col">
-                        <img src="/static/images/documents-vector.png" alt="Documents Vector" width="300" height="240" />
+                        <img src="/static/images/documents-vector.png" alt="Tài liệu y tế Vector" width="300" height="240" />
                     </div>
                 </div>
 
@@ -298,12 +298,12 @@
                         <div class="form-outline">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <input type="text" name="document-name" placeholder="Enter your document name" class="form-control" />
+                                    <input type="text" name="document-name" placeholder="Nhập tên tài liệu" class="form-control" />
                                 </div>
 
                                 <div class="col-md-3">
                                     <select class="form-control" name="document-owner" required>
-                                        <option value="{{ profile_data['basic_data']['id'] }}">Self ({{ profile_data['basic_data']['first_name'] }})</option>
+                                        <option value="{{ profile_data['basic_data']['id'] }}">Bản thân ({{ profile_data['basic_data']['first_name'] }})</option>
                                         {% for member in members_data %}
                                             <option value="{{ member['id'] }}">{{ member['first_name'] }} {{ member['last_name'] }}</option>
                                         {% endfor %}
@@ -315,7 +315,7 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <button type="submit" class="btn btn-custom btn-group-sm">Upload</button>
+                                    <button type="submit" class="btn btn-custom btn-group-sm">Tải lên</button>
                                 </div>
                             </div>
                         </div> 
@@ -323,9 +323,9 @@
                 </div>
             </div>
 
-            <!-- Family Documents Card -->
+            <!-- Family Tài liệu y tế Card -->
             <div class="card shadow p-4 mt-4" id="member-documents-card">
-                <h3><b>Family Medical Records</b></h3>
+                <h3><b>Hồ sơ y tế gia đình</b></h3>
                 <br>
                 {% if members_data %}
                     {% for member in members_data %}
@@ -342,60 +342,60 @@
                                             class="btn btn-custom btn-sm"
                                             data-url="{{ url_for('main.get_document', document_id=data['id']) }}"
                                             onclick="openDocument(this)">
-                                            View document
+                                            Xem tài liệu
                                         </button>
                                     </div>
                                 </div>
                             {% endfor %}
                         {% else %}
-                            <h6>No documents uploaded for this member yet.</h6>
+                            <h6>Thành viên này chưa có tài liệu nào.</h6>
                         {% endif %}
                         <hr>
                     {% endfor %}
                 {% else %}
-                    <h6>Add a member to manage family medical records.</h6>
+                    <h6>Hãy thêm thành viên để quản lý hồ sơ y tế gia đình.</h6>
                 {% endif %}
             </div>
 
             <!-- Medication Reminder Card -->
             <div class="card shadow p-4 mt-4" id="medication-reminder-card">
-                <h3><b>Medication Reminder (Morning - Evening)</b></h3>
+                <h3><b>Nhắc uống thuốc (Sáng - Chiều)</b></h3>
                 <br>
                 <form action="{{ url_for('main.add_medication_reminder') }}" method="POST">
                     <div class="row">
                         <div class="col-md-4">
-                            <label class="form-label"><b>Member</b></label>
+                            <label class="form-label"><b>Thành viên</b></label>
                             <select class="form-control" name="member-id" required>
-                                <option value="{{ profile_data['basic_data']['id'] }}">Self ({{ profile_data['basic_data']['first_name'] }})</option>
+                                <option value="{{ profile_data['basic_data']['id'] }}">Bản thân ({{ profile_data['basic_data']['first_name'] }})</option>
                                 {% for member in members_data %}
                                     <option value="{{ member['id'] }}">{{ member['first_name'] }} {{ member['last_name'] }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label"><b>Medicine</b></label>
-                            <input type="text" name="medicine-name" placeholder="e.g. Vitamin D" class="form-control" required />
+                            <label class="form-label"><b>Thuốc</b></label>
+                            <input type="text" name="medicine-name" placeholder="Ví dụ: Vitamin D" class="form-control" required />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label"><b>Notes</b></label>
-                            <input type="text" name="medicine-notes" placeholder="After meal" class="form-control" />
+                            <label class="form-label"><b>Ghi chú</b></label>
+                            <input type="text" name="medicine-notes" placeholder="Sau ăn" class="form-control" />
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-4">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="morning" checked>
-                                <label class="form-check-label">Morning (08:00 AM)</label>
+                                <label class="form-check-label">Sáng (08:00)</label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="evening" checked>
-                                <label class="form-check-label">Evening (08:00 PM)</label>
+                                <label class="form-check-label">Chiều (20:00)</label>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-custom">Add Reminder</button>
+                            <button type="submit" class="btn btn-custom">Thêm nhắc nhở</button>
                         </div>
                     </div>
                 </form>
@@ -404,55 +404,55 @@
                     {% for item in medication_reminders %}
                         <div class="row">
                             <div class="col-md-8">
-                                <h6><b>{{ item['medicine_name'] }}</b> for {{ member_name_map.get(item['member_id'], 'Member #' ~ item['member_id']) }}</h6>
+                                <h6><b>{{ item['medicine_name'] }}</b> cho {{ member_name_map.get(item['member_id'], 'Thành viên #' ~ item['member_id']) }}</h6>
                                 <h6>
-                                    {% if item['morning_enabled'] %}Morning{% endif %}
+                                    {% if item['morning_enabled'] %}Buổi sáng{% endif %}
                                     {% if item['morning_enabled'] and item['evening_enabled'] %} + {% endif %}
-                                    {% if item['evening_enabled'] %}Evening{% endif %}
+                                    {% if item['evening_enabled'] %}Buổi chiều{% endif %}
                                     {% if item['notes'] %} | {{ item['notes'] }}{% endif %}
                                 </h6>
                             </div>
                             <div class="col-md-4">
                                 <form action="{{ url_for('main.delete_medication_reminder', reminder_id=item['id']) }}" method="POST">
-                                    <button class="btn btn-custom btn-sm" type="submit">Delete</button>
+                                    <button class="btn btn-custom btn-sm" type="submit">Xóa</button>
                                 </form>
                             </div>
                         </div>
                         <hr>
                     {% endfor %}
                 {% else %}
-                    <h6>No medication reminders yet.</h6>
+                    <h6>Chưa có nhắc uống thuốc.</h6>
                 {% endif %}
             </div>
 
-            <!-- Appointment History Card -->
+            <!-- Lịch sử khám Card -->
             <div class="card shadow p-4 my-4" id="appointment-history-card">
                 {% if appointment_data %}
                     <div class="row">
                         <div class="col-md-8">
-                            <h3><b>Appointment History</b></h3>
+                            <h3><b>Lịch sử khám</b></h3>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" onclick="showAdmin()" checked required />
-                                <label>Admin</label>
+                                <label>Chủ tài khoản</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" onclick="showMember()" />
-                                <label>Member</label>
+                                <label>Thành viên</label>
                             </div>
 
                         </div>
                     </div>
                 {% else %}
-                    <h5>Appointment History</h5>
+                    <h5>Lịch sử khám</h5>
                 {% endif %}
 
                 {% if appointment_data %}
                     <br>
-                    <h6>Showing appointments of <b>{{ profile_data['basic_data']['first_name'] }} {{ profile_data['basic_data']['last_name'] }}</b></h6>
+                    <h6>Hiển thị lịch khám của <b>{{ profile_data['basic_data']['first_name'] }} {{ profile_data['basic_data']['last_name'] }}</b></h6>
                     <br>
                     <div class="row">
 
@@ -461,23 +461,23 @@
                         </div>
 
                         <div class="col-md-2">
-                            <h6><b>Mode</b></h6>
+                            <h6><b>Hình thức</b></h6>
                         </div>
 
                         <div class="col-md-3">
-                            <h6><b>Doctor</b></h6>
+                            <h6><b>Bác sĩ</b></h6>
                         </div>
 
                         <div class="col-md-2">
-                            <h6><b>Specialist</b></h6>
+                            <h6><b>Chuyên khoa</b></h6>
                         </div>
 
                         <div class="col-md-2">
-                            <h6><b>Date</b></h6>
+                            <h6><b>Ngày</b></h6>
                         </div>
 
                         <div class="col-md-2">
-                            <h6><b>Location</b></h6>
+                            <h6><b>Địa điểm</b></h6>
                         </div>
                     </div>
                     <hr>
@@ -517,25 +517,25 @@
                 <div class="card shadow p-4 my-4" id="member-appointment-history" >
                     <div class="row">
                         <div class="col-md-8">
-                            <h5>Member appointment history</h5>
+                            <h5>Lịch sử khám của thành viên</h5>
                         </div>
     
                         <div class="col-md-4">
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" onclick="showAdmin()"/>
-                                <label>Admin</label>
+                                <label>Chủ tài khoản</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input"  onclick="showMember()" checked required />
-                                <label>Member</label>
+                                <label>Thành viên</label>
                             </div>
                         </div>
                     </div>
 
                     {% for member in members_appointment_data %}
                         <br>
-                        <h6>Showing appointments of <b>{{ member['name'] }}</b></h6>
+                        <h6>Hiển thị lịch khám của <b>{{ member['name'] }}</b></h6>
                         <br>
                         <div class="row">
 
@@ -544,23 +544,23 @@
                             </div>
 
                             <div class="col-md-2">
-                                <h6>Mode</h6>
+                                <h6>Hình thức</h6>
                             </div>
 
                             <div class="col-md-3">
-                                <h6>Doctor</h6>
+                                <h6>Bác sĩ</h6>
                             </div>
 
                             <div class="col-md-2">
-                                <h6><b>Specialist</b></h6>
+                                <h6><b>Chuyên khoa</b></h6>
                             </div>
 
                             <div class="col-md-2">
-                                <h6>Date</h6>
+                                <h6>Ngày</h6>
                             </div>
 
                             <div class="col-md-2">
-                                <h6>Location</h6>
+                                <h6>Địa điểm</h6>
                             </div>
                         </div>
                         <hr>
@@ -600,7 +600,7 @@
 
             {% if not appointment_data %}
                 <div class="card shadow p-4 mb-3" id="appointment-history-card">
-                    <h6>Your appointments history will appear here.</h6>
+                    <h6>Lịch sử khám của bạn sẽ hiển thị tại đây.</h6>
                 </div>
             {% endif %}
         </div>

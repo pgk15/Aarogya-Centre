@@ -89,6 +89,9 @@ def _get_suggested_speciality(response):
 
 def _refresh_session(profile_id):
     profile_data = profile.get_profile(profile_id)
+    if not profile_data:
+        return False
+
     session["profile_data"] = profile_data
     session["appointment_data"] = appointment.get_all_appointments(profile_id) or []
     session["members_data"] = profile.get_members(profile_id) or []
@@ -107,6 +110,7 @@ def _refresh_session(profile_id):
         "account_age": account_age[0],
         "completion_percentage": completion_percentage
     }
+    return True
 
 
 # Home
@@ -129,7 +133,7 @@ def home():
     return render_template("home.html")
 
 
-# Register
+# Đăng ký
 @bp.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
@@ -156,15 +160,15 @@ def register():
                 profile_data['is_doctor'] = True
                 profile.create_profile(profile_data)
             else:
-                return render_template("register.html", message="Invalid user category")
-            return render_template("login.html", message="Registration successful")
+                return render_template("register.html", message="Loại tài khoản không hợp lệ")
+            return render_template("login.html", message="Đăng ký thành công")
         else:
-            return render_template("register.html", message="Passwords do not match")
+            return render_template("register.html", message="Mật khẩu không khớp")
     else:
         return render_template("register.html")
 
 
-# Login
+# Đăng nhập
 @bp.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -175,7 +179,8 @@ def login():
 
         id = profile.authentication(login_data)
         if id:
-            _refresh_session(id)
+            if not _refresh_session(id):
+                return render_template("login.html", message="Không thể tải hồ sơ của tài khoản này.")
             profile_data = session.get("profile_data")
             if profile_data is not None:
                 profile_data["basic_data"]["logged_in"] = True
@@ -185,7 +190,7 @@ def login():
                 "messages": [
                     {
                         "sender": "Bot",
-                        "message": "Welcome to healthcare chatbot. Describe your symptoms and I will suggest a suitable speciality.",
+                        "message": "Chào mừng đến với chatbot sức khỏe. Hãy mô tả triệu chứng, tôi sẽ gợi ý chuyên khoa phù hợp.",
                         "timestamp": datetime.now()
                     }
                 ]
@@ -194,7 +199,7 @@ def login():
             profile.edit_profile(id, profile_data)
             return redirect(url_for('main.dashboard'))
         else:
-            return render_template("login.html", message="User not found")
+            return render_template("login.html", message="Không tìm thấy tài khoản")
     else:
         return render_template("login.html")
 
@@ -202,8 +207,12 @@ def login():
 # Dashboard
 @bp.route("/dashboard")
 def dashboard():
+    profile_data = session.get("profile_data")
+    if not profile_data:
+        return redirect(url_for("main.login"))
+
     return render_template("dashboard.html",
-                           profile_data=session.get('profile_data'),
+                           profile_data=profile_data,
                            members_data=session.get('members_data'),
                            session_stats=session.get('session_stats'),
                            upcoming_appointments=session.get('upcoming_appointments'),
@@ -213,13 +222,13 @@ def dashboard():
                            available_slots=session.get('available_slots'),
                            today_medication_notifications=session.get('today_medication_notifications'),
                            member_name_map=_build_member_name_map(
-                               session.get('profile_data'),
+                               profile_data,
                                session.get('members_data')
-                           ) if session.get('profile_data') else {}
+                           )
                            )
 
 
-# Dashboard: Search Doctors
+# Dashboard: Search Bác sĩs
 @bp.route("/search-doctors", methods=['GET', 'POST'])
 def search_doctors():
     if request.method == 'POST':
@@ -289,7 +298,7 @@ def check_availability():
         return redirect(url_for('main.dashboard'))
 
 
-# Dashboard: Book Appointment
+# Dashboard: Đặt lịch khám
 @bp.route("/book-appointment", methods=['GET', 'POST'])
 def book_appointment():
     if request.method == 'POST':
@@ -331,16 +340,20 @@ def clear_selection():
 # Communicate
 @bp.route("/communicate", methods=['GET', 'POST'])
 def communicate():
+    profile_data = session.get("profile_data")
+    if not profile_data:
+        return redirect(url_for("main.login"))
+
     if request.method == 'POST':
         appointment_member = request.form.get('appointment-member')
         communication_mode = request.form.get('communication-mode')
 
     return render_template("communicate.html", 
-                           profile_data=session.get('profile_data')
+                           profile_data=profile_data
                            )
 
 
-# Profile
+# Hồ sơ
 @bp.route("/profile")
 def view_profile():
     profile_data = session.get("profile_data")
@@ -378,7 +391,7 @@ def view_profile():
                            )
 
 
-# Profile: Add Member
+# Hồ sơ: Thêm thành viên
 @bp.route("/add-member", methods=['GET', 'POST'])
 def add_member():
     profile_data = session.get('profile_data')
@@ -411,7 +424,7 @@ def add_member():
         return render_template("add_member.html", profile_data=profile_data)
 
 
-# Profile: Upload Documents
+# Hồ sơ: Tải lên Tài liệu y tế
 @bp.route("/upload-documents", methods=['GET', 'POST'])
 def upload_documents():
     profile_data = session.get('profile_data')
@@ -444,7 +457,7 @@ def upload_documents():
     return redirect(url_for('main.view_profile'))
 
 
-# Profile: View Documents
+# Hồ sơ: View Tài liệu y tế
 @bp.route("/view-document", methods=['POST'])
 def view_documents():
     document_id = request.form.get('document-button')
@@ -452,7 +465,7 @@ def view_documents():
     return redirect(url_for('main.get_document', document_id=document_id))
 
 
-# Profile: Get Document
+# Hồ sơ: Get Document
 @bp.route("/get-document/<document_id>", methods=['GET'])
 def get_document(document_id):
     profile_data = session.get('profile_data')
@@ -475,13 +488,13 @@ def get_document(document_id):
     )
 
 
-# Update Profile
+# Cập nhật hồ sơ
 @bp.route("/update-profile", methods=['GET', 'POST'])
 def update_profile():
     return render_template("update_profile.html", profile_data=session.get('profile_data'))
 
 
-# Update Profile: Update Basic Data
+# Cập nhật hồ sơ: Update Basic Data
 @bp.route("/update-basic-data", methods=['GET', 'POST'])
 def update_basic_data():
     if request.method == 'POST':
@@ -496,7 +509,7 @@ def update_basic_data():
         profile_data['basic_data']['state'] = request.form.get("state").capitalize()
         profile_data['basic_data']['mobile_number'] = request.form.get("mobile-number")
 
-        if profile_data["basic_data"]["speciality"] != None:
+        if profile_data["basic_data"]["speciality"] is not None:
             profile_data["basic_data"]["speciality"] = request.form.get("doctor-speciality")
 
         if not profile.edit_profile(profile_data["basic_data"]["id"], profile_data):
@@ -505,7 +518,7 @@ def update_basic_data():
         return redirect(url_for('main.update_profile'))
 
 
-# Update Profile: Update Health Data
+# Cập nhật hồ sơ: Update Health Data
 @bp.route("/update-health-data", methods=['GET', 'POST'])
 def update_health_data():
     if request.method == 'POST':
@@ -531,7 +544,7 @@ def update_health_data():
         return redirect(url_for('main.update_profile'))
 
 
-# Update Profile: Update Login Data
+# Cập nhật hồ sơ: Update Đăng nhập Data
 @bp.route("/update-login-data", methods=['GET', 'POST'])
 def update_login_data():
     if request.method == "POST":
@@ -589,7 +602,7 @@ def add_medication_reminder():
     return redirect(url_for("main.view_profile"))
 
 
-# Medication Reminders: Delete
+# Medication Reminders: Xóa
 @bp.route("/delete-medication-reminder/<int:reminder_id>", methods=["POST"])
 def delete_medication_reminder(reminder_id):
     profile_data = session.get("profile_data")
@@ -628,8 +641,8 @@ def healthcare_chatbot():
 
         if suggested_speciality == "emergency":
             bot_reply = (
-                "I detected severe symptoms. Please seek emergency care immediately "
-                "or call your local emergency number."
+                "Phát hiện triệu chứng nghiêm trọng. Vui lòng đến cơ sở cấp cứu ngay "
+                "hoặc gọi số cấp cứu địa phương."
             )
             chat_history["messages"].append(
                 {
@@ -644,13 +657,13 @@ def healthcare_chatbot():
         doctors = _load_doctor_suggestions_by_speciality(suggested_speciality)
         if doctors:
             doctor_names = ", ".join(doctor["name"] for doctor in doctors)
-            doctor_reply = f"Suggested doctors ({suggested_speciality}): {doctor_names}."
+            doctor_reply = f"Gợi ý bác sĩ ({suggested_speciality}): {doctor_names}."
         else:
-            doctor_reply = f"Suggested speciality: {suggested_speciality}. Please use Book Appointment to find available doctors."
+            doctor_reply = f"Gợi ý chuyên khoa: {suggested_speciality}. Vui lòng vào mục Đặt lịch khám để tìm bác sĩ phù hợp."
 
         triage_reply = (
-            f"Preliminary triage suggests: {suggested_speciality}. "
-            "This is not a medical diagnosis."
+            f"Đánh giá sơ bộ: {suggested_speciality}. "
+            "Nội dung này không thay thế chẩn đoán y khoa."
         )
         chat_history["messages"].append(
             {

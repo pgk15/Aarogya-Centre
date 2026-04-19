@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.exc import IntegrityError
-from datetime import date
+from datetime import date, datetime
 import base64
 
 from app.database import db
@@ -23,7 +23,9 @@ def authentication(login_data):
             email_address=login_data['email'],
             password=login_data['password']
         ).first()
-        
+
+        if not account:
+            return False
         return account.id
     except SQLAlchemyError as e:
         print(f"Error during authentication: {e}")
@@ -35,7 +37,11 @@ def authentication(login_data):
 def create_profile(profile_data):
     """Create user profile."""
     today = date.today()
-    birthdate = profile_data['birth_date'].split("-")
+    birth_date_value = profile_data["birth_date"]
+    if isinstance(birth_date_value, str):
+        birth_date_value = datetime.strptime(birth_date_value, "%Y-%m-%d").date()
+
+    birthdate = str(birth_date_value).split("-")
     age = today.year - int(birthdate[0]) - ((today.month, today.day) < (int(birthdate[1]), int(birthdate[2])))
     try:
         existing_user = BasicData.query.filter_by(email_address=profile_data['email']).first()
@@ -45,7 +51,7 @@ def create_profile(profile_data):
         basic_data = BasicData(
             first_name=profile_data['first_name'],
             last_name=profile_data['last_name'],
-            birth_date=profile_data['birth_date'],
+            birth_date=birth_date_value,
             city=profile_data['city'],
             state=profile_data['state'],
             mobile_number=profile_data['mobile'],
@@ -108,19 +114,20 @@ def get_profile(id):
         
         health_data = HealthData.query.filter_by(id=id).first()
         documents = Documents.query.filter_by(user_id=id).all()
-        
-        try:
-            profile_data = base64.b64encode(basic_data.profile_picture).decode('utf-8')
-        except Exception as e:
-            print(f"Error encoding image: {e}")
+
+        encoded_profile_picture = None
+        if basic_data.profile_picture:
+            try:
+                encoded_profile_picture = base64.b64encode(basic_data.profile_picture).decode("utf-8")
+            except Exception as e:
+                print(f"Error encoding image: {e}")
         
         data = {
             "basic_data": {
                 "id": basic_data.id,
-                "profile_picture": profile_data,
+                "profile_picture": encoded_profile_picture,
                 "first_name": basic_data.first_name,
                 "last_name": basic_data.last_name,
-                "profile_picture": basic_data.profile_picture,
                 "email_address": basic_data.email_address,
                 "birth_date": basic_data.birth_date,
                 "address": basic_data.address,
@@ -130,22 +137,22 @@ def get_profile(id):
                 "speciality": basic_data.speciality
             },
             "health_data": {
-                "gender": health_data.gender,
-                "age": health_data.age,
-                "blood_group": health_data.blood_group,
-                "weight": health_data.weight,
-                "height": health_data.height,
-                "obesity": health_data.obesity,
-                "disability": health_data.disability,
-                "fitzpatrick": health_data.fitzpatrick,
-                "allergies": health_data.allergies,
-                "diabetes": health_data.diabetes,
-                "thyroid": health_data.thyroid,
-                "cancer": health_data.cancer,
-                "covid": health_data.covid,
-                "asthma": health_data.asthma,
-                "hiv_aids": health_data.hiv_aids,
-                "addiction": health_data.addiction
+                "gender": health_data.gender if health_data else None,
+                "age": health_data.age if health_data else None,
+                "blood_group": health_data.blood_group if health_data else None,
+                "weight": health_data.weight if health_data else None,
+                "height": health_data.height if health_data else None,
+                "obesity": health_data.obesity if health_data else None,
+                "disability": health_data.disability if health_data else None,
+                "fitzpatrick": health_data.fitzpatrick if health_data else None,
+                "allergies": health_data.allergies if health_data else None,
+                "diabetes": health_data.diabetes if health_data else None,
+                "thyroid": health_data.thyroid if health_data else None,
+                "cancer": health_data.cancer if health_data else None,
+                "covid": health_data.covid if health_data else None,
+                "asthma": health_data.asthma if health_data else None,
+                "hiv_aids": health_data.hiv_aids if health_data else None,
+                "addiction": health_data.addiction if health_data else None
             },
             "documents": [
                 {
@@ -160,18 +167,18 @@ def get_profile(id):
         if basic_data.is_doctor:
             doctor_stats = DoctorStats.query.filter_by(id=id).first()
             data["stats"] = {
-                "account_created_on": doctor_stats.account_created_on,
-                "number_of_appointments_diagnosed": doctor_stats.number_of_appointments_diagnosed,
-                "number_of_virtual_appointments_diagnosed": doctor_stats.number_of_virtual_appointments_diagnosed
+                "account_created_on": doctor_stats.account_created_on if doctor_stats else date.today(),
+                "number_of_appointments_diagnosed": doctor_stats.number_of_appointments_diagnosed if doctor_stats else 0,
+                "number_of_virtual_appointments_diagnosed": doctor_stats.number_of_virtual_appointments_diagnosed if doctor_stats else 0
             }
         else:
             user_stats = UserStats.query.filter_by(id=id).first()
             data["stats"] = {
-                "account_created_on": user_stats.account_created_on,
-                "number_of_appointments": user_stats.number_of_appointments,
-                "number_of_virtual_appointments": user_stats.number_of_virtual_appointments,
-                "number_of_documents_uploaded": user_stats.number_of_documents_uploaded,
-                "number_of_members_added": user_stats.number_of_members_added
+                "account_created_on": user_stats.account_created_on if user_stats else date.today(),
+                "number_of_appointments": user_stats.number_of_appointments if user_stats else 0,
+                "number_of_virtual_appointments": user_stats.number_of_virtual_appointments if user_stats else 0,
+                "number_of_documents_uploaded": user_stats.number_of_documents_uploaded if user_stats else 0,
+                "number_of_members_added": user_stats.number_of_members_added if user_stats else 0
             }
         return data
     except Exception as e:

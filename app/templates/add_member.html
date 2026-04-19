@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarogya Centre | Add Member</title>
+    <title>Aarogya Centre | Thêm thành viên</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
 
     <!-- Bootstrap CSS -->
@@ -27,7 +27,7 @@
             <img src="/static/images/logo.png" alt="Aarogya Centre Logo" width="200" height="100">
         </a>
 
-        <!-- Navigation Bar: User Name -->
+        <!-- Navigation Bar: User Malee -->
         <ul class="nav nav-pills">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
@@ -41,41 +41,41 @@
                     
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">View dashboard</a></li>
-                    <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">View profile</a></li>
-                    <li><a class="dropdown-item" href="#">Need help?</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">Xem trang tổng quan</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">Xem hồ sơ</a></li>
+                    <li><a class="dropdown-item" href="#">Cần trợ giúp?</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Log Out</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Đăng xuất</a></li>
                 </ul>
             </li>   
         </ul>
     </div>
 </nav>
     
-    <!-- Add Member Card -->
+    <!-- Thêm thành viên Card -->
     <div class="card shadow p-5 mb-5 bg-body rounded">
         <div class="card-body">
-            <h1><b>Add a member</b></h1>
+            <h1><b>Thêm thành viên</b></h1>
 
             <form action="{{ url_for('main.add_member') }}" method="POST">
                 <div class="row">
                     <div class="col-md-4 mb-3 mt-2">
                         <div class="form-outline">
-                            <label class="form-label"><b>First name</b></label>
-                            <input type="text" name="first-name" placeholder="Enter your first name" class="form-control" required autofocus />
+                            <label class="form-label"><b>Tên</b></label>
+                            <input type="text" name="first-name" placeholder="Nhập tên của bạn" class="form-control" required autofocus />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3 mt-2">
                         <div class="form-outline">
-                            <label class="form-label"><b>Last name</b></label>
-                            <input type="text" name="last-name" placeholder="Enter your last name" class="form-control" required />
+                            <label class="form-label"><b>Họ</b></label>
+                            <input type="text" name="last-name" placeholder="Nhập họ của bạn" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3 mt-2">
                         <div class="form-outline">
-                            <label class="form-label"><b>Birth date</b></label>
+                            <label class="form-label"><b>Ngày sinh</b></label>
                             <input type="date" name="birth-date" class="form-control" required />
                         </div>
                     </div>
@@ -85,22 +85,22 @@
 
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>City</b></label>
-                            <input type="text" name="city" placeholder="Enter city" class="form-control" required />
+                            <label class="form-label"><b>Thành phố</b></label>
+                            <input type="text" name="city" placeholder="Nhập thành phố" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>State</b></label>
-                            <input type="text" name="state" placeholder="Enter state" class="form-control" required />
+                            <label class="form-label"><b>Tỉnh/Thành</b></label>
+                            <input type="text" name="state" placeholder="Nhập tỉnh/thành" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>Mobile number</b></label>
-                            <input type="number" name="mobile-number" placeholder="Enter your mobile number" class="form-control" required />
+                            <label class="form-label"><b>Số điện thoại</b></label>
+                            <input type="number" name="mobile-number" placeholder="Nhập số điện thoại của bạn" class="form-control" required />
                         </div>
                     </div>
 
@@ -109,8 +109,8 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <div class="form-outline">
-                            <label class="form-label"><b>Email address</b></label>
-                            <input type="email" name="email-address" placeholder="Enter your email address" class="form-control" required />
+                            <label class="form-label"><b>Địa chỉ email</b></label>
+                            <input type="email" name="email-address" placeholder="Nhập địa chỉ email của bạn" class="form-control" required />
                         </div>
                     </div>
 

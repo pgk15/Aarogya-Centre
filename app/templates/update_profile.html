@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarogya Centre | Update Profile</title>
+    <title>Aarogya Centre | Cập nhật hồ sơ</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
 
     <!-- Bootstrap CSS -->
@@ -24,7 +24,7 @@
                 <img src="/static/images/logo.png" alt="Aarogya Centre Logo" width="200" height="100">
             </a>
 
-            <!-- Navigation Bar: User Name -->
+            <!-- Navigation Bar: User Malee -->
             <ul class="nav nav-pills">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
@@ -38,11 +38,11 @@
                         
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">View dashboard</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">View profile</a></li>
-                        <li><a class="dropdown-item" href="#">Need help?</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">Xem trang tổng quan</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">Xem hồ sơ</a></li>
+                        <li><a class="dropdown-item" href="#">Cần trợ giúp?</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Log Out</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Đăng xuất</a></li>
                     </ul>
                 </li>   
             </ul>
@@ -54,7 +54,7 @@
 
             <!-- Update Basic Data Card -->
             <div class="card shadow p-4" id="update-basic-data-card">
-                <h5>Update Basic Information</h5>
+                <h5>Cập nhật thông tin cơ bản</h5>
                 <br>
 
                 <form action="{{ url_for('main.update_basic_data') }}" method="POST" enctype="multipart/form-data">
@@ -78,49 +78,49 @@
     
                     <br><br>
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>First name</b></label>
-                        <input type="text" name="first-name" value="{{ profile_data['basic_data']['first_name'] }}" placeholder="Enter your first name"
+                        <label class="form-label"><b>Tên</b></label>
+                        <input type="text" name="first-name" value="{{ profile_data['basic_data']['first_name'] }}" placeholder="Nhập tên của bạn"
                             class="form-control" />
                     </div>
     
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>Last name</b></label>
-                        <input type="text" name="last-name" value="{{ profile_data['basic_data']['last_name'] }}" placeholder="Enter your last name"
+                        <label class="form-label"><b>Họ</b></label>
+                        <input type="text" name="last-name" value="{{ profile_data['basic_data']['last_name'] }}" placeholder="Nhập họ của bạn"
                             class="form-control" />
                     </div>
     
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>Birth date</b></label>
+                        <label class="form-label"><b>Ngày sinh</b></label>
                         <input type="date" name="birth-date" value="{{ profile_data['basic_data']['birth_date'] }}" class="form-control" />
                     </div>
     
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>Address</b></label>
-                        <input type="text" name="address" value="{{ profile_data['basic_data']['address'] }}" placeholder="Flat number, Building name" 
+                        <label class="form-label"><b>Địa chỉ</b></label>
+                        <input type="text" name="address" value="{{ profile_data['basic_data']['address'] }}" placeholder="Số nhà, tên tòa nhà" 
                             class="form-control" />
                     </div>
 
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>City</b></label>
-                        <input type="text" name="city" value="{{ profile_data['basic_data']['city'] }}" placeholder="Enter your home city"
+                        <label class="form-label"><b>Thành phố</b></label>
+                        <input type="text" name="city" value="{{ profile_data['basic_data']['city'] }}" placeholder="Nhập thành phố nơi ở"
                             class="form-control" />
                     </div>
 
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>State</b></label>
-                        <input type="text" name="state" value="{{ profile_data['basic_data']['state'] }}" placeholder="Enter your home city"
+                        <label class="form-label"><b>Tỉnh/Thành</b></label>
+                        <input type="text" name="state" value="{{ profile_data['basic_data']['state'] }}" placeholder="Nhập thành phố nơi ở"
                             class="form-control" />
                     </div>
 
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>Mobile number</b></label>
-                        <input type="number" name="mobile-number" value="{{ profile_data['basic_data']['mobile_number'] }}" placeholder="Enter your mobile number"
+                        <label class="form-label"><b>Số điện thoại</b></label>
+                        <input type="number" name="mobile-number" value="{{ profile_data['basic_data']['mobile_number'] }}" placeholder="Nhập số điện thoại của bạn"
                             class="form-control" />
                     </div>
 
                     {% if profile_data['basic_data']['speciality'] != None %}
                         <div class="form-outline mt-2">
-                            <label class="form-label"><b>Specialization</b></label><br>
+                            <label class="form-label"><b>Chuyên khoa</b></label><br>
 
                             <select class="select form-control" name="doctor-speciality">
                                 <option value="{{ basic_data[9] }}" selected>{{ basic_data[9] }}</option>
@@ -128,7 +128,7 @@
                                 <option value="Cardiologist">Cardiologist</option>
                                 <option value="Dermatologist">Dermatologist</option>
                                 <option value="Endocrinologist">Endocrinologist</option>
-                                <option value="Family Physician">Family Physician</option>
+                                <option value="Family Physician">Bác sĩ gia đình</option>
                                 <option value="Gastroenterologist">Gastroenterologist</option>
                                 <option value="Nephrologist">Nephrologist</option>
                                 <option value="Neurologist">Neurologist</option>
@@ -145,35 +145,35 @@
                     {% endif %}
     
                     <br><br>
-                    <button type="submit" class="btn btn-custom btn-lg">Submit</button>
+                    <button type="submit" class="btn btn-custom btn-lg">Lưu</button>
                 </form>
             </div>
 
-            <!-- Update Login Data Card -->
+            <!-- Update Đăng nhập Data Card -->
             <div class="card shadow p-4 mt-4" id="update-login-data-card">
-                <h5>Update Login Information</h5>
+                <h5>Cập nhật thông tin đăng nhập</h5>
 
                 <br>
                 <form action="{{ url_for('main.update_login_data') }}" method="POST">
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>Email address</b></label>
-                        <input type="email" name="email-address" value="{{ profile_data['basic_data']['email_address'] }}" placeholder="Enter your email address"
+                        <label class="form-label"><b>Địa chỉ email</b></label>
+                        <input type="email" name="email-address" value="{{ profile_data['basic_data']['email_address'] }}" placeholder="Nhập địa chỉ email của bạn"
                             class="form-control" />
                     </div>
     
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>Password</b></label>
-                        <input type="password" name="password" placeholder="Enter your new password" class="form-control" />
+                        <label class="form-label"><b>Mật khẩu</b></label>
+                        <input type="password" name="password" placeholder="Nhập mật khẩu mới" class="form-control" />
                     </div>
     
                     <div class="form-outline mt-2">
-                        <label class="form-label"><b>Re-enter password</b></label>
-                        <input type="password" name="re-enter-password" placeholder="Re-enter your new password" class="form-control" />
+                        <label class="form-label"><b>Nhập lại mật khẩu</b></label>
+                        <input type="password" name="re-enter-password" placeholder="Nhập lại mật khẩu mới" class="form-control" />
                     </div>
     
                     <br><br>
                     <div>
-                        <button type="submit" class="btn btn-custom btn-lg">Submit</button>
+                        <button type="submit" class="btn btn-custom btn-lg">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -183,73 +183,73 @@
 
             <!-- Update Health Data Card -->
             <div class="card shadow p-4" id="update-health-data-card">
-                <h5>Update Health Information</h5>
+                <h5>Cập nhật thông tin sức khỏe</h5>
 
                 <br><br>
                 <form action="{{ url_for('main.update_health_data') }}" method="POST">
                     <div class="form-outline">
-                        <label class="form-label"><b>Gender</b></label><br>
+                        <label class="form-label"><b>Giới tính</b></label><br>
                         {% if profile_data['health_data']['gender'] == 'Male' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Male" checked />
-                                <label>Male</label>
+                                <label>Nam</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Female" />
-                                <label>Female</label>
+                                <label>Nữ</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Other" />
-                                <label>Other</label>
+                                <label>Khác</label>
                             </div>
                         {% endif %}
 
                         {% if profile_data['health_data']['gender'] == 'Female' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Male" />
-                                <label>Male</label>
+                                <label>Nam</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Female" checked />
-                                <label>Female</label>
+                                <label>Nữ</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" value="Other" />
-                                <label>Other</label>
+                                <label>Khác</label>
                             </div>
                         {% endif %}
                         
                         {% if profile_data['health_data']['gender'] == 'Other' %}
                         <div class="form-check form-check-inline">
                             <input type="radio" class="form-check-input" name="gender" value="Male" />
-                            <label>Male</label>
+                            <label>Nam</label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input type="radio" class="form-check-input" name="gender" value="Female" />
-                            <label>Female</label>
+                            <label>Nữ</label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input type="radio" class="form-check-input" name="gender" value="Other" checked />
-                            <label>Other</label>
+                            <label>Khác</label>
                         </div>
                         {% endif %}
                     </div>
                     
                     <br>
                     <div class="form-outline">
-                        <label class="form-label"><b>Blood Group</b></label><br>
+                        <label class="form-label"><b>Nhóm máu</b></label><br>
 
                         <select class="select form-control" name="blood-group">
                             {% if profile_data['health_data']['blood_group'] %}
                                 <option value="{{ profile_data['health_data']['blood_group'] }}">{{ profile_data['health_data']['blood_group'] }}</option>
                             {% else %}
-                                <option value="">Choose blood group</option>
+                                <option value="">Chọn nhóm máu</option>
                             {% endif %}
                             <option value="A +">A +</option>
                             <option value="A -">A -</option>
@@ -263,27 +263,27 @@
                     </div>
 
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Weight</b></label>
-                        <input type="number" name="weight" placeholder="Enter your weight in kgs" value="{{ profile_data['health_data']['weight'] }}" 
+                        <label class="form-label"><b>Cân nặng</b></label>
+                        <input type="number" name="weight" placeholder="Nhập cân nặng (kg)" value="{{ profile_data['health_data']['weight'] }}" 
                             class="form-control" />
                     </div>
     
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Height</b></label>
-                        <input type="number" name="height" placeholder="Enter your height in cms" value="{{ profile_data['health_data']['height'] }}" 
+                        <label class="form-label"><b>Chiều cao</b></label>
+                        <input type="number" name="height" placeholder="Nhập chiều cao (cm)" value="{{ profile_data['health_data']['height'] }}" 
                             class="form-control" />
                     </div>
 
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Disability</b></label>
+                        <label class="form-label"><b>Khuyết tật</b></label>
                         <select class="select form-control" name="disability">
                             {% if profile_data['health_data']['disability'] %}
                                 <option value="{{ profile_data['health_data']['disability'] }}">{{ profile_data['health_data']['disability'] }}</option>
                             {% else %}
-                                <option value="">Choose disability type</option>
+                                <option value="">Chọn dạng khuyết tật</option>
                             {% endif %}
-                            <option value="No" style="font-weight: bold">No</option>
-                            <optgroup label="Locomotor Disability">
+                            <option value="No" style="font-weight: bold">Không</option>
+                            <optgroup label="Locomotor Khuyết tật">
                                 <option value="Leprosy Cured Person">Leprosy Cured Person</option>
                                 <option value="Cerebral Palsy">Cerebral Palsy</option>
                                 <option value="Dwarfism">Dwarfism</option>
@@ -298,8 +298,8 @@
                                 <option value="Deaf">Deaf</option>
                                 <option value="Hard of Hearing">Hard of Hearing</option>
                             </optgroup>
-                            <option value="Speech and Language Disability" style="font-weight: bold">Speech and Language Disability</option>
-                            <optgroup label="Intellectual Disability">
+                            <option value="Speech and Language Khuyết tật" style="font-weight: bold">Speech and Language Khuyết tật</option>
+                            <optgroup label="Intellectual Khuyết tật">
                                 <option value="Specific Learning Disabilities">Specific Learning Disabilities</option>
                                 <option value="Autism Spectrum Disorder">Autism Spectrum Disorder</option>
                             </optgroup>
@@ -318,12 +318,12 @@
                     </div>
 
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Fitzpatrick Skin Type</b></label>
+                        <label class="form-label"><b>Loại da Fitzpatrick</b></label>
                         <select class="select form-control" name="fitzpatrick-skin-type">
                             {% if profile_data['health_data']['fitzpatrick'] %}
                                 <option value="{{ profile_data['health_data']['fitzpatrick'] }}">{{ profile_data['health_data']['fitzpatrick'] }}</option>
                             {% else %}
-                                <option value="">Choose fitzpatrick skin type</option>
+                                <option value="">Chọn loại da Fitzpatrick</option>
                             {% endif %}
                             <option value="Type 1">Type 1</option>
                             <option value="Type 2">Type 2</option>
@@ -335,43 +335,43 @@
                     </div>
 
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Allergies</b></label>
-                        <input type="text" name="allergies" placeholder="Enter your allergies" value="{{ profile_data['health_data']['allergies'] }}" 
+                        <label class="form-label"><b>Dị ứng</b></label>
+                        <input type="text" name="allergies" placeholder="Nhập dị ứng của bạn" value="{{ profile_data['health_data']['allergies'] }}" 
                             class="form-control" />
                     </div>
 
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Cancer</b></label>
+                        <label class="form-label"><b>Ung thư</b></label>
                         <select name="cancer" class="select form-control">
                             {% if profile_data['health_data']['cancer'] %}
                                 <option value="{{ profile_data['health_data']['cancer'] }}">{{ profile_data['health_data']['cancer'] }}</option>
                             {% else %}
-                                <option value="">Choose type of cancer</option>
+                                <option value="">Chọn loại ung thư</option>
                             {% endif %}
-                            <option value="No">No</option>
-                            <option value="Bladder Cancer">Bladder Cancer</option>
-                            <option value="Breast Cancer">Breast Cancer</option>
-                            <option value="Colon and Rectal Cancer">Colon and Rectal Cancer</option>
-                            <option value="Endometrial Cancer">Endometrial Cancer</option>
-                            <option value="Kidney Cancer">Kidney Cancer</option>
+                            <option value="No">Không</option>
+                            <option value="Bladder Ung thư">Bladder Ung thư</option>
+                            <option value="Breast Ung thư">Breast Ung thư</option>
+                            <option value="Colon and Rectal Ung thư">Colon and Rectal Ung thư</option>
+                            <option value="Endometrial Ung thư">Endometrial Ung thư</option>
+                            <option value="Kidney Ung thư">Kidney Ung thư</option>
                             <option value="Leukemia">Leukemia</option>
-                            <option value="Liver Cancer">Liver Cancer</option>
-                            <option value="Lung Cancer">Lung Cancer</option>
+                            <option value="Liver Ung thư">Liver Ung thư</option>
+                            <option value="Lung Ung thư">Lung Ung thư</option>
                             <option value="Melanoma">Melanoma</option>
                             <option value="Non-Hodgkin Lymphoma">Non-Hodgkin Lymphoma</option>
-                            <option value="Pancreatic Cancer">Pancreatic Cancer</option>
-                            <option value="Prostate Cancer">Prostate Cancer</option>
-                            <option value="Thyroid Cancer">Thyroid Cancer</option>
+                            <option value="Pancreatic Ung thư">Pancreatic Ung thư</option>
+                            <option value="Prostate Ung thư">Prostate Ung thư</option>
+                            <option value="Tuyến giáp Ung thư">Tuyến giáp Ung thư</option>
                         </select>
                     </div>
                     
                     <br>
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Diabetes</b></label><br>
+                        <label class="form-label"><b>Tiểu đường</b></label><br>
                         {% if profile_data['health_data']['diabetes'] == 'No' or not profile_data['health_data']['diabetes'] %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="diabetes" value="No" checked />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
@@ -388,7 +388,7 @@
                         {% if profile_data['health_data']['diabetes'] == 'Type 1' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="diabetes" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
@@ -405,7 +405,7 @@
                         {% if profile_data['health_data']['diabetes'] == 'Type 2' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="diabetes" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
@@ -422,11 +422,11 @@
 
                     <br>
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Thyroid</b></label><br>
+                        <label class="form-label"><b>Tuyến giáp</b></label><br>
                         {% if profile_data['health_data']['thyroid'] == 'No' or not profile_data['health_data']['thyroid'] %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="thyroid" value="No" checked />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
@@ -443,7 +443,7 @@
                         {% if profile_data['health_data']['thyroid'] == 'Hyperthyroidism' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="thyroid" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
@@ -460,7 +460,7 @@
                         {% if profile_data['health_data']['thyroid'] == 'Hypothyroidism' %}    
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="thyroid" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
@@ -477,56 +477,56 @@
                     
                     <br>
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Covid</b></label><br>
+                        <label class="form-label"><b>COVID</b></label><br>
                         {% if profile_data['health_data']['covid'] == 'No' or not profile_data['health_data']['covid'] %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="covid" value="No" checked />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="covid" value="Yes" />
-                                <label>Yes</label>
+                                <label>Có</label>
                             </div>
                         {% endif %}
 
                         {% if profile_data['health_data']['covid'] == 'Yes' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="covid" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="covid" value="Yes" checked />
-                                <label>Yes</label>
+                                <label>Có</label>
                             </div>
                         {% endif %}
                     </div>
                     
                     <br>
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Asthma</b></label><br>
+                        <label class="form-label"><b>Hen suyễn</b></label><br>
                         {% if profile_data['health_data']['asthma'] == 'No' or not profile_data['health_data']['asthma'] %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="asthma" value="No" checked />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="asthma" value="Yes" />
-                                <label>Yes</label>
+                                <label>Có</label>
                             </div>
                         {% endif %}
 
                         {% if profile_data['health_data']['asthma'] == 'Yes' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="asthma" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="asthma" value="Yes" checked />
-                                <label>Yes</label>
+                                <label>Có</label>
                             </div>
                         {% endif %}
                     </div>
@@ -537,85 +537,85 @@
                         {% if profile_data['health_data']['hiv_aids'] == 'No' or not profile_data['health_data']['hiv_aids'] %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="hiv-aids" value="No" checked />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="hiv-aids" value="Yes" />
-                                <label>Yes</label>
+                                <label>Có</label>
                             </div>
                         {% endif %}
 
                         {% if profile_data['health_data']['hiv_aids'] == 'Yes' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="hiv-aids" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="hiv-aids" value="Yes" checked />
-                                <label>Yes</label>
+                                <label>Có</label>
                             </div>
                         {% endif %}
                     </div>
                     
                     <br>
                     <div class="form-ouline mt-2">
-                        <label class="form-label"><b>Addiction</b></label><br>
+                        <label class="form-label"><b>Nghiện</b></label><br>
                         {% if profile_data['health_data']['addiction'] == 'No' or not profile_data['health_data']['addiction'] %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="addiction" value="No" checked />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" name="addiction" value="Smoking" />
-                                <label>Smoking</label>
+                                <input type="radio" class="form-check-input" name="addiction" value="Hút thuốc" />
+                                <label>Hút thuốc</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" name="addiction" value="Alcohol" />
-                                <label>Alcohol</label>
+                                <input type="radio" class="form-check-input" name="addiction" value="Rượu bia" />
+                                <label>Rượu bia</label>
                             </div>
                         {% endif %}
 
-                        {% if profile_data['health_data']['addiction'] == 'Smoking' %}
+                        {% if profile_data['health_data']['addiction'] == 'Hút thuốc' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="addiction" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" name="addiction" value="Smoking" checked />
-                                <label>Smoking</label>
+                                <input type="radio" class="form-check-input" name="addiction" value="Hút thuốc" checked />
+                                <label>Hút thuốc</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" name="addiction" value="Alcohol" />
-                                <label>Alcohol</label>
+                                <input type="radio" class="form-check-input" name="addiction" value="Rượu bia" />
+                                <label>Rượu bia</label>
                             </div>
                         {% endif %}
 
-                        {% if profile_data['health_data']['addiction'] == 'Alcohol' %}
+                        {% if profile_data['health_data']['addiction'] == 'Rượu bia' %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="addiction" value="No" />
-                                <label>No</label>
+                                <label>Không</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" name="addiction" value="Smoking" />
-                                <label>Smoking</label>
+                                <input type="radio" class="form-check-input" name="addiction" value="Hút thuốc" />
+                                <label>Hút thuốc</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" name="addiction" value="Alcohol" checked />
-                                <label>Alcohol</label>
+                                <input type="radio" class="form-check-input" name="addiction" value="Rượu bia" checked />
+                                <label>Rượu bia</label>
                             </div>
                         {% endif %}
                     </div>
     
                     <br><br><br>
-                    <button type="submit" class="btn btn-custom btn-lg">Submit</button>
+                    <button type="submit" class="btn btn-custom btn-lg">Lưu</button>
                 </form>
                 
             </div>

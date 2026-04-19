@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarogya Centre | Communicate</title>
+    <title>Aarogya Centre | Tư vấn trực tuyến</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
 
     <!-- Bootstrap CSS -->
@@ -35,11 +35,11 @@
                         style="border: 5px solid #22577A; border-radius: 100%;" />
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">View dashboard</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">View profile</a></li>
-                        <li><a class="dropdown-item" href="#">Need help?</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">Xem trang tổng quan</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">Xem hồ sơ</a></li>
+                        <li><a class="dropdown-item" href="#">Cần trợ giúp?</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Log Out</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Đăng xuất</a></li>
                     </ul>
                 </li>   
             </ul>
@@ -51,14 +51,14 @@
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <h1><b>Communicate with doctor</b></h1>
+                    <h1><b>Trao đổi với bác sĩ</b></h1>
                     <br>
 
                     <form action="{{ url_for('main.communicate') }}" method="POST">
                         <div class="form-outline mb-4">
-                            <label class="form-label"><b>Patient name</b></label><br>
+                            <label class="form-label"><b>Tên bệnh nhân</b></label><br>
                             <select class="select form-control" name="appointment-member" required >
-                                <option value="" disabled selected>Choose a member</option>
+                                <option value="" disabled selected>Chọn thành viên</option>
                                 <option value="{{ profile_data['basic_data']['id'] }}">{{ profile_data['basic_data']['first_name'] }} {{ profile_data['basic_data']['last_name'] }}</option>
                                 {% for member in member_basic_data %}
                                     <option value="{{ member[0] }}">{{ member[2] }} {{ member[3] }}</option>
@@ -66,23 +66,23 @@
                             </select>
                         </div>
                         
-                        <label class="form-label"><b>Communication mode</b></label><br>
+                        <label class="form-label"><b>Hình thức trao đổi</b></label><br>
     
                         <div class="form-check form-check-inline">
                             <input type="radio" class="form-check-input" name="communication-mode" value="Text" checked />
-                            <label>Text chat</label>
+                            <label>Nhắn tin</label>
                         </div>
                         
                         <div class="form-check form-check-inline">
                             <input type="radio" class="form-check-input" name="communication-mode" value="Video" />
-                            <label>Video chat</label>
+                            <label>Gọi video</label>
                         </div>
                         
                         <br>
-                        <!-- <button type="submit" class="btn btn-custom btn-lg mt-5">Start Call</button> -->
+                        <!-- <button type="submit" class="btn btn-custom btn-lg mt-5">Bắt đầu cuộc gọi</button> -->
 
                         <button class="btn btn-custom btn-lg mt-5">
-                            <a href="https://4bcb-2409-4042-d06-61dc-9908-c780-d552-5ec6.in.ngrok.io" target="_blank">Start Call</a>
+                            <a href="https://4bcb-2409-4042-d06-61dc-9908-c780-d552-5ec6.in.ngrok.io" target="_blank">Bắt đầu cuộc gọi</a>
                         </button>
                     </form>
                 </div>

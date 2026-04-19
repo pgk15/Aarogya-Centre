@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarogya Centre | Dashboard</title>
+    <title>Aarogya Centre | Trang tổng quan</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
 
     <!-- Bootstrap CSS -->
@@ -44,10 +44,10 @@
                         {% endif %}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">View account</a></li>
-                        <li><a class="dropdown-item" href="#">Need help?</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">Xem hồ sơ</a></li>
+                        <li><a class="dropdown-item" href="#">Cần trợ giúp?</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Log Out</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.home') }}">Đăng xuất</a></li>
                     </ul>
                 </li>   
             </ul>
@@ -68,30 +68,30 @@
     <div class="row mt-3">
         <div class="col-md-7">
 
-            <!-- Book Appointment Card -->
+            <!-- Đặt lịch khám Card -->
             <div class="card shadow p-4" id="book-appointment-card">
-                <h3><b>Book Appointment</b></h3>
+                <h3><b>Đặt lịch khám</b></h3>
                 <form action="{{ url_for('main.search_doctors') }}" method="POST">
                     <div class="form-outline mt-4">
-                        <label class="form-label"><b>How do you want to meet a doctor?</b></label><br>
+                        <label class="form-label"><b>Bạn muốn khám với bác sĩ theo hình thức nào?</b></label><br>
 
                         {% if ongoing_booking['mode'] == 'Hospital' or not ongoing_booking %}
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Hospital" 
                                     onclick="showCity()" checked required />
-                                <label>Hospital</label>
+                                <label>Tại bệnh viện</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Home" 
                                     onclick="hideCity()" />
-                                <label>Home</label>
+                                <label>Tại nhà</label>
                             </div>
         
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Virtual" 
                                     onclick="hideCity()" />
-                                <label>Virtual</label>
+                                <label>Trực tuyến</label>
                             </div>
                         {% endif %}
 
@@ -99,19 +99,19 @@
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Hospital" 
                                     onclick="showCity()" />
-                                <label>Hospital</label>
+                                <label>Tại bệnh viện</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Home" 
                                     onclick="hideCity()" checked required />
-                                <label>Home</label>
+                                <label>Tại nhà</label>
                             </div>
         
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Virtual" 
                                     onclick="hideCity()" />
-                                <label>Virtual</label>
+                                <label>Trực tuyến</label>
                             </div>
                         {% endif %}
 
@@ -119,31 +119,31 @@
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Hospital" 
                                     onclick="showCity()" />
-                                <label>Hospital</label>
+                                <label>Tại bệnh viện</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Home" 
                                     onclick="hideCity()" />
-                                <label>Home</label>
+                                <label>Tại nhà</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="appointment-mode" value="Virtual" 
                                     onclick="hideCity()" checked required />
-                                <label>Virtual</label>
+                                <label>Trực tuyến</label>
                             </div>
                         {% endif %}
                     </div>
 
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <label class="form-label"><b>Patient name</b></label><br>
+                            <label class="form-label"><b>Tên bệnh nhân</b></label><br>
                             <select class="select form-control" name="appointment-member" required >
                                 {% if ongoing_booking['user_name'] %}
                                     <option value="{{ ongoing_booking['user_name'] }}" disabled selected>{{ ongoing_booking['user_name'] }}</option>
                                 {% else %}
-                                    <option value="" disabled selected>Choose a member</option>
+                                    <option value="" disabled selected>Chọn thành viên</option>
                                 {% endif %}
                                 <option value="{{ profile_data['basic_data']['id'] }}">{{ profile_data['basic_data']['first_name'] }} {{ profile_data['basic_data']['last_name'] }}</option>
                                 {% if members_data != None %}
@@ -156,29 +156,29 @@
 
                         <div class="col" id="appointment-city">
                             {% if ongoing_booking['mode'] == 'Hospital' %}
-                                <label class="form-label"><b>City</b></label>
+                                <label class="form-label"><b>Thành phố</b></label>
                                 <input type="text" name="appointment-city" value="{{ ongoing_booking['appointment_city'] }}" class="form-control" >
                             {% elif not ongoing_booking %}
-                                <label class="form-label"><b>City</b></label>
-                                <input type="text" name="appointment-city" placeholder="Enter a city" class="form-control" >
+                                <label class="form-label"><b>Thành phố</b></label>
+                                <input type="text" name="appointment-city" placeholder="Nhập thành phố" class="form-control" >
                             {% endif %}
                         </div>
                     </div>
 
                     <div class="row mt-3">
                         <div class="col">
-                            <label class="form-label"><b>Doctor's specialisation</b></label>
+                            <label class="form-label"><b>Chuyên khoa bác sĩ</b></label>
                             <select class="select form-control" name="appointment-doctor-category" onchange="this.form.submit()" required>
                                 {% if ongoing_booking %}
                                     <option value="{{ ongoing_booking['specialist'] }}" disabled selected>{{ ongoing_booking['specialist'] }}</option>
                                 {% else %}
-                                    <option value="" disabled selected>Choose doctor's specialisation</option>
+                                    <option value="" disabled selected>Chọn chuyên khoa bác sĩ</option>
                                 {% endif %}
                                 <option value="Allergist/Immunologist">Allergist/Immunologist</option>
                                 <option value="Cardiologist">Cardiologist</option>
                                 <option value="Dermatologist">Dermatologist</option>
                                 <option value="Endocrinologist">Endocrinologist</option>
-                                <option value="Family Physician">Family Physician</option>
+                                <option value="Family Physician">Bác sĩ gia đình</option>
                                 <option value="Gastroenterologist">Gastroenterologist</option>
                                 <option value="Nephrologist">Nephrologist</option>
                                 <option value="Neurologist">Neurologist</option>
@@ -195,12 +195,12 @@
 
                         <div class="col">
                     <form action="{{ url_for('main.check_availability') }}" method="POST">
-                            <label class="form-label"><b>Doctor's name</b></label>
+                            <label class="form-label"><b>Tên bác sĩ</b></label>
                             <select class="select form-control" name="appointment-doctor" required>
                                 {% if ongoing_booking['doctor_name'] %}
                                     <option value="{{ ongoing_booking['doctor_name'] }}" disabled selected>{{ ongoing_booking['doctor_name'] }}</option>
                                 {% else %}
-                                    <option value="" disabled selected>Choose doctor's name</option>
+                                    <option value="" disabled selected>Chọn tên bác sĩ</option>
                                 {% endif %}
                                 {% if not ongoing_booking['doctor_name'] and list_of_doctors %}
                                     {% for doctor in list_of_doctors %}
@@ -213,7 +213,7 @@
     
                     <div class="row mt-3">
                         <div class="col">
-                            <label class="form-label"><b>Appointment date</b></label>
+                            <label class="form-label"><b>Ngày khám</b></label>
                             {% if ongoing_booking['appointment_date'] %}
                                 <input type="date" class="form-control" name="appointment-date" value="{{ ongoing_booking['appointment_date'] }}" 
                                     onchange="this.form.submit()" required>
@@ -226,12 +226,12 @@
 
                         <div class="col">
                     <form action="{{ url_for('main.book_appointment') }}" method="POST">
-                            <label class="form-label"><b>Appointment time</b></label>
+                            <label class="form-label"><b>Giờ khám</b></label>
                             <select class="select form-control" name="appointment-time" required>
                                 {% if ongoing_booking['appointment_time'] %}
                                     <option value="{{ ongoing_booking['appointment_time'] }}" disabled selected>{{ ongoing_booking['appointment_time'] }}</option>
                                 {% else %}
-                                    <option value="" disabled selected>Choose time</option>
+                                    <option value="" disabled selected>Chọn giờ</option>
                                 {% endif %}
                                 {% if available_slots %}
                                     {% for slot in available_slots %}
@@ -245,13 +245,13 @@
                     <div class="row">
                         <div class="col">
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-custom">Book appointment</button>
+                                <button type="submit" class="btn btn-custom">Đặt lịch</button>
                             </div>
                         </div>
                     </form>
                         <div class="col">
                             <form action="{{ url_for('main.clear_selection') }}" method="POST">
-                                <button type="submit" class="btn btn-custom mt-4">Clear selection</button>
+                                <button type="submit" class="btn btn-custom mt-4">Xóa lựa chọn</button>
                             </form>
                         </div>
                     </div>
@@ -261,9 +261,9 @@
             <div class="card shadow p-4 mt-4" id="communicate-link-card"> 
                 <div class="row">
                     <div class="col">
-                        <h3><b>Now you can instantly connect with a doctor!</b></h3>
+                        <h3><b>Giờ đây bạn có thể kết nối nhanh với bác sĩ!</b></h3>
 
-                        <a class="btn btn-custom mt-5" href="{{ url_for('main.communicate') }}" role="button">Communicate with doctor</a>
+                        <a class="btn btn-custom mt-5" href="{{ url_for('main.communicate') }}" role="button">Trao đổi với bác sĩ</a>
                     </div>
                     <div class="col">
                         <img src="/static/images/communicate-vector.png" alt="Communicate Vector" width="300" height="250">
@@ -271,9 +271,9 @@
                 </div>
             </div>
 
-            <!-- Appointment Statistics Card -->
+            <!-- Thống kê lịch khám Card -->
             <div class="card shadow p-4 my-4" id="appointment-statistics-card">
-                <h3><b>Appointment Statistics</b></h3>
+                <h3><b>Thống kê lịch khám</b></h3>
                 <div class="row">
                     <div class="col-md-6">
                         <div id="piechart"
@@ -284,13 +284,13 @@
 
                     <div class="col-md-4">
                         <div class="foo"></div>
-                        <h6>Total Appointments</h6>
+                        <h6>Tổng lịch khám</h6>
 
                         <div class="foo appointment"></div>
-                        <h6>Virtual Appointments</h6>
+                        <h6>Lịch khám trực tuyến</h6>
                         
                         <div class="foo virtual-appointment"></div> 
-                        <h6>Physical Appointments</h6>
+                        <h6>Lịch khám trực tiếp</h6>
                     </div>
 
                     <div class="col-md-2">
@@ -320,18 +320,18 @@
 
             <!-- Upcoming Appointment Card -->
             <div class="card shadow p-4" id="upcoming-appointment-card">
-                <h3><b>Upcoming Physical Appointment</b></h3>
+                <h3><b>Lịch khám trực tiếp sắp tới</b></h3>
 
                 {% if upcoming_appointments['physical'] %}
                     <br>
                     <div class="row">
                         <div class="col-md-4" id="upcoming-fields">
-                            <h6>Patient name</h6>
-                            <h6>Doctor name</h6>
-                            <h6>Specialisation</h6>
-                            <h6>Date</h6>
-                            <h6>Time</h6>
-                            <h6>Location</h6>
+                            <h6>Tên bệnh nhân</h6>
+                            <h6>Tên bác sĩ</h6>
+                            <h6>Chuyên khoa</h6>
+                            <h6>Ngày</h6>
+                            <h6>Giờ</h6>
+                            <h6>Địa điểm</h6>
                         </div>
 
                         <div class="col-md-8">
@@ -345,24 +345,24 @@
                     </div>
                 {% else %}
                     <br>
-                    <h6>No upcoming appointments this week</h6>
+                    <h6>Không có lịch khám trực tiếp trong tuần này</h6>
                     <img src="/static/images/appointment-vector.png" alt="Appointment Vector" width="200" height="150" />
                 {% endif %}
             </div>
 
-            <!-- Upcoming Virtual Appointment Card -->
+            <!-- Lịch khám trực tuyến sắp tới Card -->
             <div class="card shadow p-4 mt-3" id="upcoming-virtual-card">
-                <h3><b>Upcoming Virtual Appointment</b></h3>
+                <h3><b>Lịch khám trực tuyến sắp tới</b></h3>
 
                 {% if upcoming_appointments['virtual'] %}
                     <br>
                     <div class="row">
                         <div class="col-md-4" id="upcoming-fields">
-                            <h6>Patient name</h6>
-                            <h6>Doctor name</h6>
-                            <h6>Specialisation</h6>
-                            <h6>Date</h6>
-                            <h6>Time</h6>
+                            <h6>Tên bệnh nhân</h6>
+                            <h6>Tên bác sĩ</h6>
+                            <h6>Chuyên khoa</h6>
+                            <h6>Ngày</h6>
+                            <h6>Giờ</h6>
                         </div>
 
                         <div class="col-md-8">
@@ -375,14 +375,14 @@
                     </div>
                 {% else %}
                     <br>
-                    <h6>No upcoming virtual appointments this week</h6>
+                    <h6>Không có lịch khám trực tuyến trong tuần này</h6>
                     <img src="/static/images/appointment-vector.png" alt="Appointment Vector" width="200" height="150" />
                 {% endif %}
             </div>
 
-            <!-- Family Members Card -->
+            <!-- Thành viên gia đình Card -->
             <div class="card shadow p-4 mt-4" id="members-card">
-                <h3><b>Family members</b></h3>
+                <h3><b>Thành viên gia đình</b></h3>
                 
                 <br>
                 <div class="row">
@@ -395,7 +395,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <h6>Admin</h6>
+                        <h6>Chủ tài khoản</h6>
                     </div>
                     <hr>
                 </div>
@@ -418,19 +418,19 @@
                     {% endfor %}
                 {% endif %}
                 
-                <a class="btn btn-custom mt-3" href="{{ url_for('main.add_member') }}" role="button">Add a member</a>
+                <a class="btn btn-custom mt-3" href="{{ url_for('main.add_member') }}" role="button">Thêm thành viên</a>
             </div>
 
             <!-- Medication Notification Card -->
             <div class="card shadow p-4 mt-4" id="medication-notification-card">
-                <h3><b>Today's Medication Alerts</b></h3>
+                <h3><b>Nhắc uống thuốc hôm nay</b></h3>
                 <br>
                 {% if today_medication_notifications %}
                     {% for item in today_medication_notifications %}
                         <div class="row">
                             <div class="col-md-8">
                                 <h6><b>{{ item['medicine_name'] }}</b></h6>
-                                <h6>{{ member_name_map.get(item['member_id'], 'Member #' ~ item['member_id']) }}</h6>
+                                <h6>{{ member_name_map.get(item['member_id'], 'Thành viên #' ~ item['member_id']) }}</h6>
                             </div>
                             <div class="col-md-4">
                                 <h6><b>{{ item['time_label'] }}</b></h6>
@@ -439,23 +439,23 @@
                         <hr>
                     {% endfor %}
                 {% else %}
-                    <h6>No medication reminders for today.</h6>
+                    <h6>Hôm nay không có nhắc uống thuốc.</h6>
                 {% endif %}
-                <a class="btn btn-custom mt-2" href="{{ url_for('main.view_profile') }}" role="button">Manage reminders</a>
+                <a class="btn btn-custom mt-2" href="{{ url_for('main.view_profile') }}" role="button">Quản lý nhắc nhở</a>
             </div>
 
             <!-- Account Card -->
             <div class="card shadow p-4 my-4" id="account-age-card">
-                <h3><b>Profile Statistics</b></h3>
+                <h3><b>Thống kê hồ sơ</b></h3>
                     <br>
                     <div class="row">
                         <div class="col-md-7">
-                            <h6>Profile Created On</h6>
-                            <h6>Profile Age</h6>
-                            <h6>Profile Completion Percentage</h6>
+                            <h6>Ngày tạo hồ sơ</h6>
+                            <h6>Thời gian sử dụng</h6>
+                            <h6>Mức độ hoàn thiện hồ sơ</h6>
                             {% if profile_data['stats']['number_of_documents_uploaded'] %}
-                                <h6>Total Number of Documents Uploaded</h6>
-                                <h6>Total Number of Members Added</h6>
+                                <h6>Tổng số tài liệu đã tải lên</h6>
+                                <h6>Tổng số thành viên đã thêm</h6>
                             {% endif %}
                         </div>
                         <div class="col-md-5">
@@ -505,8 +505,8 @@
                 </div>
 
                 <div class="col-md-10">
-                    <h5><b>Healthcare chatbot</b></h5>
-                    <p>Active now</p>
+                    <h5><b>Chatbot sức khỏe</b></h5>
+                    <p>Đang hoạt động</p>
                 </div>
             </div>
         </div>
@@ -534,12 +534,12 @@
         <div id="chat-input">
             {% if flag %}
                 <form action="{{ url_for('main.healthcare_chatbot') }}" method="POST">
-                    <input type="text" name="user-response" placeholder="Enter your Response" 
+                    <input type="text" name="user-response" placeholder="Nhập nội dung của bạn" 
                         onsubmit="this.form.submit()" required>
                 </form>
             {% else %}
                 <form action="{{ url_for('main.healthcare_chatbot') }}" method="POST">
-                    <input type="text" name="user-response" placeholder="Enter your Response" 
+                    <input type="text" name="user-response" placeholder="Nhập nội dung của bạn" 
                         onsubmit="this.form.submit()" required>
                 </form>
             {% endif %}

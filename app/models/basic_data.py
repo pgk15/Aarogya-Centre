@@ -1,10 +1,9 @@
-from sqlalchemy.dialects.postgresql import BYTEA
 from app.database import db
 
 class BasicData(db.Model):
     __tablename__ = 'basic_data'
     id = db.Column(db.Integer, primary_key=True)
-    profile_picture = db.Column(BYTEA)
+    profile_picture = db.Column(db.LargeBinary)
     first_name = db.Column(db.String(25))
     last_name = db.Column(db.String(25))
     birth_date = db.Column(db.Date)

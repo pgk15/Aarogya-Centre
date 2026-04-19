@@ -23,7 +23,9 @@ def get_available_tables():
     try:
         with db.engine.connect() as conn:
             inspector = inspect(conn)
-            return inspector.get_table_names(schema='public')
+            if db.engine.dialect.name == "postgresql":
+                return inspector.get_table_names(schema="public")
+            return inspector.get_table_names()
     except SQLAlchemyError as e:
         logger.error(f"Error fetching available tables: {e}")
         return []
