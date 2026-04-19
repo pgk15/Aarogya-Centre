@@ -7,7 +7,6 @@ function hideCity() {
     document.getElementById("appointment-city").style.display = 'none';
 }
 
-// Healthcare Chatbot
 function openChat() {
     document.getElementById("chat-form").style.display = "block";
     document.getElementById("open-button").style.display = "none";

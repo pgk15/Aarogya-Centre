@@ -618,7 +618,6 @@ def delete_medication_reminder(reminder_id):
     return redirect(url_for("main.view_profile"))
 
 
-# Healthcare Chatbot
 @bp.route("/healthcare-chatbot", methods=['GET', 'POST'])
 def healthcare_chatbot():
     if request.method == 'POST':
